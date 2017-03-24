@@ -26,8 +26,10 @@
 </div>
 <div class="btn_sign">发送祝福</div>
 <script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./js/fastclick.js"></script>
 <script type="text/javascript">
     $(function(){
+        FastClick.attach(document.body);
         var $spans=$('.wish_list span');
         var $txt=$('.sign_wish textarea');
         $spans.on('click',function(e){

@@ -25,9 +25,41 @@
     </div>
 </div>
 <div class="btn_sign">签到</div>
+
+<!--layer-->
+<div class="layer-mask"></div>
+<div id="layer-range">
+    <!--<div class="range-title">温馨提示</div>-->
+    <div class="range-content">
+    </div>
+    <div class="range-btn"></div>
+</div>
 <script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./js/fastclick.js"></script>
 <script type="text/javascript">
     $(function(){
+        FastClick.attach(document.body);
+
+        var num=1;
+        var $mask=$('.layer-mask'),
+            $range=$('#layer-range'),
+            $rangeContent=$('#layer-range .range-content'),
+            $rangeBtn=$('.range-btn');
+        $('.btn_sign').on('click',function(){
+            if(num==0){
+                $mask.fadeIn(200);
+                $rangeContent.html('<img class="bg" src="./img/loading.svg" />');
+                $rangeBtn.text('正在签到中...');
+                $range.fadeIn(200);
+            }
+            if(num==1){
+                $mask.fadeIn(200);
+                $rangeContent.html('<img src="./img/loading.svg" /><p>签到成功</p>');
+                $rangeBtn.text('正在签到中...');
+                $range.fadeIn(200);
+            }
+        });
+
         var $spans=$('.wish_list span');
         var $txt=$('.sign_wish textarea');
         $spans.on('click',function(e){
