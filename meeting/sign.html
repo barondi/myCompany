@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="cochat" />
+    <meta name="description" content="Lenovo,KickOff,Meeting,BT/IT,Cochat" />
+    <meta name="keywords" content="联想誓师大会,联想活动,BT/IT,乐聊" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>签到</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="sign_wish clearfix">
+    <textarea autofocus name="write_wish" value=""></textarea>
+    <div class="wish_list clearfix">
+        <span>新的一年希望公司越来越好,同事间互相帮助</span>
+        <span>业绩蒸蒸日上</span>
+        <span>我要上墙,我为上墙而活</span>
+        <span>新财年,新开始,加油</span>
+        <span>Never Stand Still</span>
+    </div>
+</div>
+<div class="btn_sign">签到</div>
+<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var $spans=$('.wish_list span');
+        var $txt=$('.sign_wish textarea');
+        $spans.on('click',function(e){
+            e.target= e.target|| e.srcElement;
+            $txt.val('').val($(e.target).text());
+            $(e.target).addClass('bg').siblings().removeClass('bg');
+        })
+        $txt.on('input',function(){
+            var $curSpan=$('.wish_list .bg');
+            $txt.val()!=$curSpan.text() ? $curSpan.removeClass('bg') : void 0;
+        })
+    })
+</script>
+</body>
+</html>

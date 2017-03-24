@@ -1,0 +1,99 @@
+html{
+	position: relative;
+	overflow-x:hidden;
+}
+
+body {
+	position: relative;
+    background-color: #8a100a;
+	background-image:url(../img/bg.png);
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:top center;
+    font-size: 100%;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+	-webkit-appearance: none;
+	font-family:Helvetica, Tahoma, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", STXihei, STHeiti, Heiti, SimSun, sans-serif;
+	overflow:hidden;
+}
+
+a{ text-decoration:none; color:#ffef41;}
+
+.box-shadow-1{  
+  -webkit-box-shadow:3px 6px 5px rgba(0, 0, 0, .5);  
+  -moz-box-shadow:3px 6px 5px rgba(0, 0, 0, .5);  
+  box-shadow:3px 6px 5px rgba(0, 0, 0, .5);  
+}
+
+canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 0px solid #000;
+	display:none;
+ }
+
+/* loading Page */
+
+.loading-page{background-color:#fff; width:100%; height:100%; position:fixed; z-index:99999;}
+.loading-page .loading{ width:50px; height:50px; position:absolute; left:50%; margin-left:-25px; top:45%;}
+.info-page{background-color:#b70812; width:100%; height:100%; position:fixed; z-index:99998;color:#ffef41;background-image:url(../img/bg_info.png);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:top center;}
+.info-page p{ width: 80%; margin: 0 auto; font-size: 20px;}
+.info-page h2{ width: 80%; margin: 30px auto; text-align: center;}
+#button-skip{ width:130px; height:44px;background-color:#ffef41; color:#b70812; border-radius:30px; text-align:center; line-height:44px; font-size:18px; z-index:999; position: absolute; left: 50%; bottom: 10%; margin-left: -65px;}
+
+/* background */
+
+.yy-title{width:100%; position:absolute; left:0; top:10px; display:none; }
+.yy-title img{width:100%;}
+.yy-foot{width:100%; position:absolute; bottom:-10px; left:0px; display:none;}
+.yy-foot img{width:100%;}
+
+/* step1 */
+.container{ width:100%; position:relative; left:0; top:50%;}
+.container .time{ width:80%; text-align:center; height:66px; color:#ffef41; background:rgba(0,0,0,0.3);border-radius:999px; position:absolute; left:10%; top:0px; line-height:66px; font-size:20px; display:none;}
+.container .treasure{ width:120px; position:absolute; top:0px; display:none; -webkit-transition:all 0.5s ease-in-out;-o-transition:all 0.5s ease-in-out;-moz-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out; z-index:998;}
+.container #treasure1{ left:5%;}
+.container #treasure2{ left:50%; margin-left:-60px;}
+.container #treasure3{ right:5%;}
+.container .treasure img{ width:100%;}
+.container .message{ width:400px; text-align:center; position:absolute; top:-60px; left:50%; margin-left:-200px; display:none; color:#ffef41; font-size:16px; text-shadow:#000 2px 2px 3px; z-index:1;}
+.container .message img{ width:100%;}
+.container #message_results{ width:300px; margin-left:-150px; top:-60px;}
+
+/* step2 */
+.container .button{ width:130px; height:44px; position:absolute; top:150px; display:none; background-color:#ffef41; color:#b70812; border-radius:30px; text-align:center; line-height:44px; font-size:18px; z-index:999;}
+.container #back{left:50%; margin-left:-140px;}
+.container #chose{left:50%; margin-left:10px;}
+.container #start{left:50%; margin-left:-65px; top:10px;}
+
+/* step3 */
+.container .key{width:80px; position:absolute; top:145px; display:none; left:50%; margin-left:-40px;-webkit-transition:all 0.8s ease-in-out;-o-transition:all 0.8s ease-in-out;-moz-transition:all 0.8s ease-in-out;transition:all 0.8s ease-in-out; z-index:999;}
+.container .key img{ width:100%;}
+.container .hand{width:100px; position:absolute; top:160px; display:none; left:50%; margin-left:30px;animation-iteration-count:infinite;-webkit-animation-iteration-count:infinite; z-index:998}
+.container .hand img{ width:100%;}
+
+/* step4 */
+.container .results{width:180px; position:absolute; top:-30px; display:none; left:50%; margin-left:-90px}
+.container .results img{ width:100%;}
+.container .noresults{width:300px; position:absolute; top:-90px; display:none; left:50%; margin-left:-150px}
+.container .noresults img{ width:100%;}
+.container .avatar{width:240px; position:absolute; top:-100px; display:none; left:50%; margin-left:-120px;z-index:999;}
+.container .avatar img{ width:100%;}
+.container #get{left:50%; margin-left:-140px;}
+.container #check_video{left:50%; margin-left:-65px;}
+.container #share_cochat{ width:75px; font-size:12px; left:50%; margin-left:-145px; background-color:#fff;}
+.container #share_wechat{left:50%; margin-left:10px; background-color:#fff;}
+
+/* step5 */
+.container .results_card{width:100%; position:absolute; top:150px; display:none; text-align:center; font-size:16px;color:#ffef41;text-shadow:#000 2px 2px 3px;}
+
+@media (max-height:479px){
+	.loading-page .loading{top:220px;}
+	.container{top:46%;}
+}

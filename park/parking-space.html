@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="keywords" content="Lenovo Parking,联想停车位"/>
+    <title>Lenovo Parking</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="parking-space">
+    <div class="len-main">
+        <p class="part-title">联想总部西区</p>
+        <ul class="part-content">
+            <li class="content-list lm1" style="width:100%;">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">总部园区</span>
+                    <!--<span>B1</span>-->
+                </p>
+            </li>
+            <!--<li class="content-list lm2">
+                <em>65</em>
+                <p class="list-position">
+                    <span class="part-name-gray">总部园区</span>
+                    <span>B2</span>
+                </p>
+            </li>-->
+        </ul>
+    </div>
+    <div class="len-main len-north">
+        <p class="part-title">联想北研</p>
+        <ul class="part-content">
+            <li class="content-list ln1">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">北研</span>
+                    <span>南库</span>
+                </p>
+            </li>
+            <li class="content-list ln2">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">北研</span>
+                    <span>北库</span>
+                </p>
+            </li>
+        </ul>
+        <ul class="part-content">
+            <li class="content-list ln3">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">北研</span>
+                    <span>地面(东区)</span>
+                </p>
+            </li>
+            <li class="content-list ln4">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">北研</span>
+                    <span>地面(西区)</span>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="len-main">
+        <p class="part-title">联想大厦</p>
+        <ul class="part-content">
+            <li class="content-list lb1">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">大厦</span>
+                    <span>B1</span>
+                </p>
+            </li>
+            <li class="content-list lb2">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">大厦</span>
+                    <span>B2</span>
+                </p>
+            </li>
+        </ul>
+        <ul class="part-content">
+            <li class="content-list lb3">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">大厦</span>
+                    <span>地面(东区)</span>
+                </p>
+            </li>
+            <li class="content-list lb4">
+                <em></em>
+                <div class="park-no-position" style="display:none;">
+                    <div class="no-position-icon"></div>
+                    <span>满</span>
+                </div>
+                <p class="list-position">
+                    <span class="part-name-gray">大厦</span>
+                    <span>地面(西区)</span>
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="writ_tail">
+        <i></i>
+        <span>刷新车位</span>
+    </div>
+
+    <div class="load-finish" style="display:none;">
+        刷新成功!
+    </div>
+
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script>
+        $(function(){
+            try {
+            /*****Begin****去掉移动端head中的...*/
+                set_pn_message_menus();
+                //调用移动方法
+                function set_pn_message_menus() {
+                    //一下是调用方法
+                    //var str_native_data = document.getElementById("_hide_native_data").value; //$("#_hide_native_data").val();
+                    //var str_native_data = JSON.stringify(json_menus);
+                    //alert(str_native_data);
+                    var device_type = get_device_type();
+                    //document.title = device_type;
+
+                    if (device_type == 'ios') {
+                        connectWebViewJavascriptBridge(function (bridge) {
+                            //bridge.send(str_native_data);
+                            bridge.send("{}");
+                        })
+                    } else if (device_type == 'android') {
+                        if (window.android && window.android.controlRight) {
+                            // window.android.controlRight(str_native_data);
+                            window.android.controlRight("{}");
+                        }
+                    }
+                }
+
+                function get_device_type() {
+                    var info = navigator.userAgent;
+                    var ios = new Array("iPhone", "iPod");
+                    var android = new Array("Android");
+                    var winphone = new Array("Windows Phone");
+
+                    for (var i = 0; i < ios.length; i++) {
+                        if (info.indexOf(ios[i]) > 0) return "ios";
+                    }
+
+                    for (var i = 0; i < android.length; i++) {
+                        if (info.indexOf(android[i]) > 0) return "android";
+                    }
+
+                    for (var i = 0; i < winphone.length; i++) {
+                        if (info.indexOf(winphone[i]) > 0) return "winphone";
+                    }
+
+                    return "others";
+                }
+
+                function connectWebViewJavascriptBridge(callback) {
+                    if (window.WebViewJavascriptBridge) {
+                        callback(WebViewJavascriptBridge)
+                    } else {
+                        document.addEventListener('WebViewJavascriptBridgeReady', function () {
+                            callback(WebViewJavascriptBridge)
+                        }, false)
+                    }
+                };
+            /******End*****/
+
+                var getParkNum=function(){
+                    $.ajax({
+                        type: "POST",
+                        /*contentType: "application/jsonp; charset=utf-8",*/
+                        url: "http://10.99.10.88:8025/ParkingLotService.asmx/GetParkingDetailsFromCampusAndNewBuilding",
+                        data: "{}",
+                        dataType: "jsonp",
+                        jsonpCallback:"callback",
+                        success: function (json,textStatus) {
+                            var data = eval(json);
+                            /*console.log(data);*/
+                            for(key in data){
+                                if(key==="北研南库"){
+                                    if(data[key]<=0){
+                                        $('.ln1 em').css('display','none');
+                                        $('.ln1 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.ln1 .park-no-position').css('display','none');
+                                        $('.ln1 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.ln1 .park-no-position').css('display','none');
+                                        $('.ln1 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="北研北库"){
+                                    if(data[key]<=0){
+                                        $('.ln2 em').css('display','none');
+                                        $('.ln2 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.ln2 .park-no-position').css('display','none');
+                                        $('.ln2 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.ln2 .park-no-position').css('display','none');
+                                        $('.ln2 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="北研东区"){
+                                    if(data[key]<=0){
+                                        $('.ln3 em').css('display','none');
+                                        $('.ln3 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.ln3 .park-no-position').css('display','none');
+                                        $('.ln3 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.ln3 .park-no-position').css('display','none');
+                                        $('.ln3 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="北研西区"){
+                                    if(data[key]<=0){
+                                        $('.ln4 em').css('display','none');
+                                        $('.ln4 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.ln4 .park-no-position').css('display','none');
+                                        $('.ln4 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.ln4 .park-no-position').css('display','none');
+                                        $('.ln4 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="大厦B1"){
+                                    if(data[key]<=0){
+                                        $('.lb1 em').css('display','none');
+                                        $('.lb1 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.lb1 .park-no-position').css('display','none');
+                                        $('.lb1 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.lb1 .park-no-position').css('display','none');
+                                        $('.lb1 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="大厦B2"){
+                                    if(data[key]<=0){
+                                        $('.lb2 em').css('display','none');
+                                        $('.lb2 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.lb2 .park-no-position').css('display','none');
+                                        $('.lb2 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.lb2 .park-no-position').css('display','none');
+                                        $('.lb2 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="大厦东区"){
+                                    if(data[key]<=0){
+                                        $('.lb3 em').css('display','none');
+                                        $('.lb3 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.lb3 .park-no-position').css('display','none');
+                                        $('.lb3 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.lb3 .park-no-position').css('display','none');
+                                        $('.lb3 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                                if(key==="大厦西区"){
+                                    if(data[key]<=0){
+                                        $('.lb4 em').css('display','none');
+                                        $('.lb4 .park-no-position').css('display','block');
+                                    }
+                                    if((data[key]<=10)&&(data[key]>=1)){
+                                        $('.lb4 .park-no-position').css('display','none');
+                                        $('.lb4 em').css('display','block').addClass('remain-warning').text(data[key]);
+                                    }
+                                    if(data[key]>10){
+                                        $('.lb4 .park-no-position').css('display','none');
+                                        $('.lb4 em').css('display','block').removeClass('remain-warning').text(data[key]);
+                                    }
+                                }
+                            }
+
+                            $('.writ_tail').on('click',function(){
+                                if(textStatus=="success"){
+                                    $('.load-finish').css('display','block');
+                                    setTimeout(function(){$('.load-finish').css('display','none');},1000);
+                                }
+                            });
+
+                        },
+                        error: function(e){
+                            console.log("error");
+                            console.log(e.message);
+                        }
+                    });
+                    $.ajax({
+                        type: "POST",
+                        /*contentType: "application/jsonp; charset=utf-8",*/
+                        url: "http://10.99.10.88:8025/ParkingLotService.asmx/GetParkingDetailsFromHQWest",
+                        data: "{}",
+                        dataType: "jsonp",
+                        jsonpCallback:"callback",
+                        success: function (json,textStatus) {
+                            var data = eval(json);
+                            console.log(data.Results);
+                            if(data.Results[0].free<=0){
+                                $('.lm1 em').css('display','none');
+                                $('.lm1 .park-no-position').css('display','block');
+                            }
+                            if((data.Results[0].free<=10)&&(data.Results[0].free>=1)){
+                                $('.lm1 .park-no-position').css('display','none');
+                                $('.lm1 em').css('display','block').addClass('remain-warning').text(data.Results[0].free);
+                            }
+                            if(data.Results[0].free>10){
+                                $('.lm1 .park-no-position').css('display','none');
+                                $('.lm1 em').css('display','block').removeClass('remain-warning').text(data.Results[0].free);
+                            }
+                            $('.writ_tail').on('click',function(){
+                                if(textStatus=="success"){
+                                    $('.load-finish').css('display','block');
+                                    setTimeout(function(){$('.load-finish').css('display','none');},1000);
+                                }
+                            });
+
+                        },
+                        error: function(e){
+                            console.log("error");
+                            console.log(e.message);
+                        }
+                    });
+                };
+                getParkNum();
+                $('div.writ_tail').on('click',function(){
+                    getParkNum();
+                });
+            }
+            catch (ex) {
+                console.log(ex.message);
+            }
+
+        });
+    </script>
+</body>
+</html>

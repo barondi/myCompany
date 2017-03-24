@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="cochat" />
+    <meta name="description" content="Lenovo,KickOff,Meeting,BT/IT,Cochat" />
+    <meta name="keywords" content="联想誓师大会,联想活动,BT/IT,乐聊" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>会议详情</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="banner">
+    <img src="./img/banner.png" />
+    <span>2017 联想财年 BT/IT Kick-Off 大会</span>
+    <!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489749865506&di=4a53d530190b0577ed8817f010bb7329&imgtype=0&src=http%3A%2F%2Fimg.taopic.com%2Fuploads%2Fallimg%2F110914%2F8879-11091422541844.jpg" />-->
+</div>
+<div class="timeline">
+    <div class="wrapper_bs">
+        <div class="beforeSign">
+            <p class="font-color-gray">距开始时间剩</p>
+            <p class="font-color-blue">00天00时00分00秒</p>
+        </div>
+    </div>
+
+    <!--<div class="start">
+        <p>大会已开始,正在进行</p>
+        <div class="onGoing">
+            <div class="talk">
+                <span>领导讲话</span>
+                <p>9:00-9:30</p>
+                <label></label>
+            </div>
+            <div>
+                <div class="sign">
+                    <img src="./img/sign.png" />
+                    <span class="box-inBlock">签到</span>
+                </div>
+                <p>9:00-9:30</p>
+                &lt;!&ndash;<label></label>&ndash;&gt;
+            </div>
+            <div>
+                <div class="wish">
+                    <img src="./img/chat.png" />
+                    <span>送祝福</span>
+                </div>
+                <p>9:00-9:30</p>
+                <label></label>
+            </div>
+            <div class="talk">
+                <span>领导讲话</span>
+                <p>9:00-9:30</p>
+            </div>
+        </div>
+    </div>-->
+</div>
+<ul class="items clearfix">
+    <li class="clearfix">
+        <em></em>
+        <span>2017.4.28 星期五 10:00</span>
+        <label></label>
+    </li>
+    <li class="clearfix">
+        <em></em>
+        <span>北京市 海淀区 西二旗西路6号</span>
+    </li>
+</ul>
+<div class="info">
+    <h2>大会简介</h2>
+    <p>2017 联想财年 BT/IT Kick-Off 大会详细内容:</p>
+    <ul>
+        <li>10:00-11:00 老板讲话</li>
+        <li>11:00-12:00 老板讲话</li>
+        <li>12:00-13:00 大伙聚餐</li>
+    </ul>
+</div>
+<!--<footer>
+    <ul class="footer">
+        <li>
+            <a href="javascript:;">签到</a>
+            <em></em>
+        </li>
+        <li>
+            <a href="javascript:;">送祝福</a>
+            <em></em>
+        </li>
+        <li>
+            <a href="javascript:;">摇奖</a>
+            <em></em>
+        </li>
+        <li>
+            <a href="javascript:;">会议群聊</a>
+        </li>
+    </ul>
+</footer>-->
+</body>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var $time=$('.beforeSign .font-color-blue');
+        var arr=[];
+        $.ajax({
+            type:'POST',
+            url:'http://10.122.23.4:8081/conference/getStartTime?id=3',
+            dataType:'json',
+            success:function(data,textStatus){
+//                console.log(data);
+                arr.push(data.startTime);
+                arr.push(data.nowTime);
+                var w=new Worker('./js/worker.js');
+                w.postMessage(arr);
+                w.onmessage=function(event){
+                    var data=event.data;
+//                    console.log(data);
+                    var str=data[0]+'天';
+                    str+=data[1]+'时';
+                    str+=data[2]+'分';
+                    str+=data[3]+'秒';
+                    $time.text(str);
+                }
+            },
+            error:function(XHR, textStatus, errorThrown){
+                $('.beforeSign .font-color-gray').text('大会开始时间');
+                $time.text('2017年4月28日');
+            }
+        });
+
+
+
+        var $bannerImg=$('.banner img');
+        $('.banner').height(setScale($bannerImg,2));
+        //->需要时设置元素的宽高比例
+        function setScale($ele,num){
+            $ele.height($ele.width()/num);
+            return $ele.height();
+        }
+    })
+</script>
+</html>
