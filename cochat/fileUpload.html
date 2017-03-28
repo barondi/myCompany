@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        /*file upload*/
+        .file_upload{width:300px;height:104px;border:3px solid #25b6ed !important;border-radius:4px;background-color:#ffffff;font-family:'Microsoft YaHei';position:relative;}
+        .file_upload .file_tail{width:16px;height:16px;position:absolute;top:10px;right:-14px;}
+        .file_upload .fu_top{padding:12px 12px 6px;}
+        .file_upload .fu_top .fu_top_title{display:inline-block;vertical-align: middle;padding-left:12px;line-height: 18px;}
+        .file_upload .fu_top img{width:40px;height:40px;vertical-align:middle;}
+        .file_upload .fu_top .fu_top_title p{color:#d4d4d4;margin-bottom:0;}
+        .file_upload .fu_top .fu_top_title p:nth-child(2) span:nth-child(2){color:#999999;margin-left:12px;}
+        div.file_finish .fu_top .fu_top_title p:nth-child(1){color:#010101;}
+        div.file_finish .fu_top .fu_top_title p:nth-child(2) span:nth-child(2){color:#d4d4d4;}
+        .file_upload .fu_top .fu_progress{margin-top:8px;}
+        .file_upload .fu_bottom{height:29px;border-top:1px solid #dadada;line-height:30px;color:#25b6ed;position:absolute;bottom:0;width:100%;}
+        .file_upload .fu_bottom span{float:right;margin-right:12px;}
+        .file_upload .file_fail{width:20px;height:20px;position:absolute;top:50%;margin-top:-10px;left:-35px;}
+
+        /*进度条*/
+        .fu_progress .load-bar { width: 100%; height: 3px; border-radius: 30px; background-color: #ffffff; position: relative; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8),  inset 0 2px 3px rgba(0, 0, 0, 0.2); }
+        .fu_progress .load-bar-inner { height: 99%; width: 0%; border-radius: inherit; position: relative; background-color: #25b6ed; animation: loader 100s linear infinite; -moz-animation: loader 100s linear infinite; -webkit-animation: loader 100s linear infinite; -o-animation: loader 100s linear infinite; }
+        @keyframes loader {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        @-moz-keyframes loader {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        @-webkit-keyframes loader {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        @-o-keyframes loader {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        @keyframes loader {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        .load-bar-inner {height: 99%;width: 0%;border-radius: inherit;position: relative;background: #c2d7ac;}
+    </style>
+</head>
+<body style="padding-left:50px;">
+<h3>自己正在发送的文件样式</h3>
+<div class="file_upload" ng-class="{chat_box02:msg.userId==currentUser.itcode, chat_box:msg.userId!=currentUser.itcode}" ng-show="msg.userId==currentUser.itcode">
+    <img class="file_tail" src="./images/fileUpload/file_tail_my.png"/>
+    <div class="fu_top">
+        <img src="./images/fileUpload/file_upload.png"/>
+        <div class="fu_top_title">
+            <p>文件正在上传中的测试.apk</p>
+            <p>
+                <span>45M</span>
+                <span>发送中</span>
+            </p>
+        </div>
+        <div class="fu_progress">
+            <div class="load-bar">
+                <div class="load-bar-inner" data-loading="0"></div>
+            </div>
+        </div>
+    </div>
+    <div class="fu_bottom">
+        <span>取消发送</span>
+    </div>
+</div>
+
+<h3>自己已发送完成的文件样式</h3>
+<div class="file_upload file_finish">
+    <img class="file_tail" src="./images/fileUpload/file_tail_my.png"  />
+    <div class="fu_top">
+        <img src="./images/fileUpload/file_finish.png" />
+        <div class="fu_top_title">
+            <p>文件正在上传中的测试.apk</p>
+            <p>
+                <span>45M</span>
+                <span>已完成</span>
+            </p>
+        </div>
+    </div>
+    <div class="fu_bottom">
+        <span>打开文件夹</span>
+        <span>打开</span>
+    </div>
+</div>
+
+
+<h3>文件发送失败</h3>
+<div class="file_upload">
+    <img class='file_fail' src="./images/fileUpload/file_fail.png" />
+    <img class="file_tail" src="./images/fileUpload/file_tail_my.png"  />
+    <div class="fu_top">
+        <img src="./images/fileUpload/file_upload.png" />
+        <div class="fu_top_title">
+            <p>文件正在上传中的测试.apk</p>
+            <p>
+                <span>45M</span>
+                <span>发送失败</span>
+            </p>
+        </div>
+    </div>
+    <div class="fu_bottom">
+        <span>取消发送</span>
+        <span>重新发送</span>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script>
+
+</script>
+</body>
+</html>
