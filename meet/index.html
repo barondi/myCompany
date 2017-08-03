@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="cochat" />
+    <meta name="description" content="Lenovo,KickOff,Meeting,BT/IT,Cochat" />
+    <meta name="keywords" content="联想誓师大会,联想活动,BT/IT,乐聊" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>会议详情</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="banner">
+    <img style="background:#ccc;" src="img/banner.png" />
+    <span></span>
+    <!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489749865506&di=4a53d530190b0577ed8817f010bb7329&imgtype=0&src=http%3A%2F%2Fimg.taopic.com%2Fuploads%2Fallimg%2F110914%2F8879-11091422541844.jpg" />-->
+</div>
+<div class="timeline">
+    <div class="wrapper_bs" style="display:none;">
+        <div class="beforeSign">
+            <p class="font-color-gray">距大会开始剩</p>
+            <p class="font-color-blue">00天00时00分00秒</p>
+        </div>
+    </div>
+
+    <div class="start" style="display:none;">
+        <p>大会进行中</p>
+        <div class="onGoing">
+            <div>
+                <div class="sign">
+                    <img src="./img/sign.png" />
+                    <span class="box-inBlock">签到</span>
+                </div>
+                <!--<p>9:00-9:30</p>
+                <label></label>-->
+            </div>
+            <!--<div>
+                <div class="wish">
+                    <img src="./img/chat.png" />
+                    <span>发弹幕</span>
+                </div>
+                <p>9:30-10:00</p>
+                <label></label>
+            </div>-->
+            <!--<div class="talk">
+                <span>领导讲话</span>
+                <p>9:00-9:30</p>
+                <label></label>
+            </div>-->
+            <!--<div class="talk">
+                <span>领导讲话</span>
+                <p>9:00-9:30</p>
+            </div>-->
+        </div>
+    </div>
+</div>
+<ul class="items clearfix">
+    <li class="clearfix">
+        <em></em>
+        <span></span>
+        <label></label>
+    </li>
+    <li class="clearfix">
+        <em></em>
+        <span></span>
+    </li>
+</ul>
+<div class="info">
+    <h2>大会简介</h2>
+    <!--<p></p>
+    <ul class="info_detail">
+        &lt;!&ndash;<li>13:30-17:30 Kickoff & Award Ceremony</li>
+        <li>18:00-20:30 Kickoff Dinner</li>&ndash;&gt;
+    </ul>-->
+</div>
+<footer>
+    <ul class="footer">
+        <li class="menu-sign">
+            <!--<a href="http://mservicetst.cochat.lenovo.com/conference-interaction/meet/sign.html">签到</a>-->
+            <a href="javascript:;">签到</a>
+            <em></em>
+        </li>
+        <!--<li class="menu-shake">
+            <a href="http://mservicetst.cochat.lenovo.com/conference-interaction/meet/sign.html">测试签到</a>
+            <em></em>
+        </li>-->
+        <li class="menu-text">
+            <!--<a href="http://mservicetst.cochat.lenovo.com/conference-interaction/meet/wish.html">弹幕</a>-->
+            <a href="javascript:;">弹幕</a>
+            <em></em>
+        </li>
+        <!--<li class="menu-shake">
+            <a href="http://mservicetst.cochat.lenovo.com/conference-interaction/meet/shake.html">摇奖</a>
+            <em></em>
+        </li>-->
+        <li class="menu-chat">
+            <a class="group_chat" href="javascript:;">会议群聊</a>
+        </li>
+        <div class="error-info" style="display:none;"></div>
+    </ul>
+</footer>
+<!--layer-->
+<div class="layer-mask"></div>
+<div id="layer-range">
+</div>
+</body>
+<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./js/fastclick.js"></script>
+<script type="text/javascript" src="./js/public.js"></script>
+<script type="text/javascript">
+    var $mask=$('.layer-mask'),
+            $range=$('#layer-range');
+    $(function(){
+        FastClick.attach(document.body);
+        var $time=$('.beforeSign .font-color-blue');
+        var $sign=$('.onGoing div .sign');
+        var $wish=$('.onGoing div .wish');
+        var $bannerImg=$('.banner img');
+        var $beforeSign=$('.wrapper_bs');
+        var $start=$('.start');
+        var $startDesc=$('.start p:first-child');
+        var $onGoing=$('.start .onGoing');
+        var $menuSign=$('.footer .menu-sign'),
+            $menuText=$('.footer .menu-text'),
+            $menuShake=$('.footer .menu-shake'),
+            $menuChat=$('.footer .menu-chat');
+        //大会开始提前多长时间签到(如20分钟)
+        var isSign;
+        var baseUrl='http://mservicetst.cochat.lenovo.com/conference-interaction/meet/';
+        var count=0;
+        var custTime=3600000;
+        $('.banner').height(setScale($bannerImg,2));
+        var arr=[];
+        $.ajax({
+            type:'POST',
+//            url:'http://mservicetst.cochat.lenovo.com/conference-interaction/meeting/detail/3/'+'dijs1',
+            url:'http://mservicetst.cochat.lenovo.com/conference-interaction/meeting/detail/3/'+u_id+'?v='+Math.random(),
+//            url:'/conference-interaction/meeting/detail/3/'+u_id+'?v='+Math.random(),
+            data:{token:myToken},
+//            data:{token:'48d1571d69791f1bb10765e527526cfbbc1a8f8ab362d0ce7ed54c8da615ab4016f532606af53f9e85c5c7f1525bdad384c5b1b40d2f3716db18fc4d08a93fc87f443b05bde984c3ab332659361217fb'},
+            dataType:'json',
+            timeout:10000,
+            success:function(data,textStatus){
+                var isConferUser=data.userInConference;
+                if(isConferUser){
+                    var confer=data.conference;
+                    /*var isPrizePerson=data.checkPrize;
+                    if(isPrizePerson.code==2001){
+                        $menuShake.css('display','none');
+                    }*/
+//                    $bannerImg.attr('src',data.filePath+confer.image);
+                    $('.banner span').text(confer.name);
+                    $('.items li:first-child span').text(data.timeString);
+                    $('.items li:last-child span').text(confer.address);
+                    $('.info').append(confer.content);
+                    isSign=data.signStatus;
+                    if (data.nowTime < (confer.start_datetime - custTime)) {
+                        //->异步倒计时
+                        arr.push(confer.start_datetime);
+                        arr.push(data.nowTime);
+                        var w=new Worker('./js/worker.js');
+                        w.postMessage(arr);
+                        w.onmessage=function(event){
+                            var data=event.data;
+                            var str=data[0]+'天';
+                            str+=data[1]+'时';
+                            str+=data[2]+'分';
+                            str+=data[3]+'秒';
+                            $time.text(str);
+                            if(data[4]<=(confer.start_datetime-custTime)){
+                                $beforeSign.css('display')!='table' ? $beforeSign.css('display','table') : void 0;
+                                setUnuse([$menuSign,$menuText]);
+                                if(count<1){
+                                    addPrompt([$menuSign,$menuText]);
+                                    count++;
+                                }
+                            }
+                            if((confer.start_datetime-custTime)<data[4] && data[4]<confer.start_datetime){
+                                removePrompt([$menuSign,$menuText]);
+                                $beforeSign.css('display','none');
+                                $start.css('display') != 'block'?$start.css('display', 'block'):void 0;
+                                setUse([$menuSign,$menuText]);
+                                setLink($menuSign,baseUrl+'sign.html');
+                                setLink($menuText,baseUrl+'wish.html');
+                                if(isSign){
+                                    setUnuse([$menuSign]);
+                                    $start.addClass('promopt').html('签到成功，发个弹幕呗~');
+                                }else{
+                                    $startDesc.text('大会进行中');
+                                }
+                            }
+                            if(confer.start_datetime<=data[4] && data[4]<confer.end_datetime){
+                                $beforeSign.css('display','none');
+                                $start.css('display') != 'block'?$start.css('display', 'block'):void 0;
+                                setUse([$menuSign,$menuText]);
+                                setLink($menuSign,baseUrl+'sign.html');
+                                setLink($menuText,baseUrl+'wish.html');
+                                if(isSign){
+                                    setUnuse([$menuSign]);
+                                    $start.addClass('promopt').html('签到成功，发个弹幕呗~');
+                                }else{
+                                    $startDesc.text('大会进行中');
+                                }
+                            }
+                            if(data[4]>=confer.end_datetime){
+                                $start.css('display') != 'block'?$start.css('display', 'block'):void 0;
+                                $start.addClass('promopt').html('大会已结束，加油小伙伴！');
+                                setUnuse([$menuSign,$menuText]);
+                            }
+                        }
+                    }
+                    if ((confer.start_datetime - custTime) <= data.nowTime && data.nowTime <= confer.end_datetime) {
+                        $beforeSign.css('display', 'none');
+                        $start.css('display') != 'block' ? $start.css('display', 'block') : void 0;
+                        setUse([$menuSign, $menuText]);
+                        setLink($menuSign, baseUrl + 'sign.html');
+                        setLink($menuText, baseUrl + 'wish.html');
+                        if (isSign) {
+                            setUnuse([$menuSign]);
+                            $menuSign.find('a').text('已签到');
+                            $start.addClass('promopt').html('签到成功，发个弹幕呗~');
+                        } else {
+                            $startDesc.text('大会进行中');
+                        }
+                    }
+                    if (data.nowTime > confer.end_datetime) {
+                        $beforeSign.css('display', 'none');
+                        $start.css('display') != 'block' ? $start.css('display', 'block') : void 0;
+                        $start.addClass('promopt').html('大会已结束，加油小伙伴！');
+                        setUnuse([$menuSign, $menuText]);
+                    }
+
+/*                  isSign=data.signStatus;
+                    //->判断是否签到
+                    if(data.signStatus){
+                        setUnuse([$menuSign]);
+                        $menuSign.find('a').text('已签到');
+                    }
+                    //->数据绑定
+//                $bannerImg.attr('src',data.filePath+confer.image);
+                    $('.banner span').text(confer.name);
+                    $('.items li:first-child span').text(data.timeString);
+                    $('.items li:last-child span').text(confer.address);
+                    $('.info').append(confer.content);
+                    //->异步倒计时
+                    arr.push(confer.start_datetime);
+                    arr.push(data.nowTime);
+                    var w=new Worker('./js/worker.js');
+                    w.postMessage(arr);
+                    w.onmessage=function(event){
+                        var data=event.data;
+                        var str=data[0]+'天';
+                        str+=data[1]+'时';
+                        str+=data[2]+'分';
+                        str+=data[3]+'秒';
+                        $time.text(str);
+                        if(data[4]<=(confer.start_datetime-custTime)){
+                            $beforeSign.css('display')!='table' ? $beforeSign.css('display','table') : void 0;
+                            setUnuse([$menuSign,$menuText]);
+                            if(count<1){
+                                addPrompt([$menuSign,$menuText]);
+                                count++;
+                            }
+                        }
+                        if((confer.start_datetime-custTime)<data[4] && data[4]<confer.start_datetime){
+                            removePrompt([$menuSign,$menuText]);
+                            $beforeSign.css('display','none');
+                            $start.css('display') != 'block'?$start.css('display', 'block'):void 0;
+                            setUse([$menuSign,$menuText]);
+                            setLink($menuSign,baseUrl+'sign.html');
+                            setLink($menuText,baseUrl+'wish.html');
+                            if(isSign){
+                                setUnuse([$menuSign]);
+                                $start.addClass('promopt').html('签到成功，发个弹幕呗~');
+                            }else{
+                                $startDesc.text('大会进行中');
+                            }
+                        }
+                        if(confer.start_datetime<=data[4] && data[4]<confer.end_datetime){
+                            $beforeSign.css('display','none');
+                            $start.css('display') != 'block'?$start.css('display', 'block'):void 0;
+                            setUse([$menuSign,$menuText]);
+                            setLink($menuSign,baseUrl+'sign.html');
+                            setLink($menuText,baseUrl+'wish.html');
+                            if(isSign){
+                                setUnuse([$menuSign]);
+                                $start.addClass('promopt').html('签到成功，发个弹幕呗~');
+                            }else{
+                                $startDesc.text('大会进行中');
+                            }
+                        }
+                        if(data[4]>=confer.end_datetime){
+                            $start.css('display') != 'block'?$start.css('display', 'block'):void 0;
+                            $start.addClass('promopt').html('大会已结束，加油小伙伴！');
+                            setUnuse([$menuSign,$menuText]);
+                        }
+                    }*/
+                }else{
+                    window.location.href=baseUrl+'error.html';
+                }
+            },
+            error:function(XHR,textStatus){
+                if(textStatus=='timeout'){
+                    showError('网络请求超时...');
+                }else if(XHR.status>=500){
+                    showError('服务器繁忙...');
+                }else{
+                    showError('获取信息失败...')
+                }
+            }
+        });
+
+        function addPrompt(ary){
+            $.each(ary,function(index,item){
+                item.on('click',show);
+            })
+        }
+        function show(){
+            $mask.fadeIn(200);
+            $range.html('<div class="range-content"><span style="line-height: 91px;">还没到时间呢，点人家干嘛啦！</span></div><div class="range-btn range-btnPrompt">我知道了</div>');
+            var $rangeBtnPrompt=$('.range-btnPrompt');
+            hide('click',$rangeBtnPrompt,$([$mask,$range]));
+            $rangeBtnPrompt.on('click',function(){
+                $('body').css('overflow','initial');
+                $('html').css('overflow','initial');
+            })
+            $range.fadeIn(200);
+            $('body').css('overflow','hidden');
+            $('html').css('overflow','hidden');
+        }
+        function removePrompt(ary){
+            $.each(ary,function(index,item){
+                item.off('click',show);
+            })
+        }
+        $sign.on('click',function(){
+            window.location.href=baseUrl+'sign.html';
+        });
+        /*$wish.on('click',function(){
+            window.location.href=baseUrl+'wish.html';
+        });*/
+        $('.group_chat').on('click',function(){
+            var data={
+                type:'group',
+                recvId:'54fe6a54cd88d3c15b8c08dd',//BT/IT China
+//                recvId:'58e59ebf3029dfb508221a4e',
+//                recvNameEn:'测试Kickoff'
+                recvNameEn:'BT/IT China'
+            };
+            if(typeof window.android.saveMsg === 'function'){
+                window.android.saveMsg(JSON.stringify(data));
+            }/*else{
+                $mask.fadeIn(200);
+                $range.html('<div class="range-content"><span style="line-height: 91px;">请升级到乐聊最新版本</span></div><div class="range-btn range-btnG">我知道了</div>');
+                var $rangeBtnG=$('.range-btnG');
+                hide('click',$rangeBtnG,$([$mask,$range]));
+                $range.fadeIn(200);
+            }*/
+        });
+
+
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+            if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'https://__bridge_loaded__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        }
+        setupWebViewJavascriptBridge(function(bridge) {
+            var callbackButton = document.querySelector('.group_chat');
+            callbackButton.onclick = function(e) {
+                bridge.callHandler('toDisplayViewController', {'roomId':'54fe6a54cd88d3c15b8c08dd','roomName':'BT/IT China','groupType':'0','recvType':'12'}, function(response) {
+
+                });
+            };
+        })
+
+    })
+</script>
+</html>

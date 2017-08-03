@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="cochat" />
+    <meta name="description" content="Lenovo,KickOff,Meeting,BT/IT,Cochat" />
+    <meta name="keywords" content="联想誓师大会,联想活动,BT/IT,乐聊" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>签到</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="sign_wish clearfix">
+    <textarea autofocus maxlength="30" name="write_wish" value=""></textarea>
+    <div class="textarea-count">
+        <span class="textareaInput">0</span>/<span class="textareaTotal">30</span>
+    </div>
+    <div class="wish_list clearfix">
+        <!--<span>新的一年希望公司越来越好,同事间互相帮助</span>
+        <span>业绩蒸蒸日上</span>
+        <span>我要上墙,我为上墙而活</span>
+        <span>新财年,新开始,加油</span>
+        <span>Never Stand Still</span>-->
+    </div>
+</div>
+<div class="btn_sign">签到</div>
+
+<!--layer-->
+<div class="layer-mask"></div>
+<div id="layer-range">
+    <!--<div class="range-title">温馨提示</div>-->
+    <!--<div class="range-content">
+    </div>
+    <div class="range-btn"></div>-->
+</div>
+<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./js/fastclick.js"></script>
+<script type="text/javascript" src="./js/public.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xNF1CD7tmLLBxI1vbYcPiIfeRneSbuKp"></script>
+<script type="text/javascript">
+    function setupWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+        if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+        window.WVJBCallbacks = [callback];
+        var WVJBIframe = document.createElement('iframe');
+        WVJBIframe.style.display = 'none';
+        WVJBIframe.src = 'https://__bridge_loaded__';
+        document.documentElement.appendChild(WVJBIframe);
+        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+    }
+    var curGeo=null;
+    //测试联想北研大厦(错误地址)
+//    var ary=[{a:116.298877,b:40.06429},{a:116.300179,b:40.063552},{a:116.296981,b:40.062986}];
+    //测试联想北研大厦(正确地址)
+//    var ary=[{a:116.304945,b:40.059845},{a:116.306229,b:40.059696},{a:116.305551,b:40.06057}];
+    //正式经纬度地址
+    var ary=[{a:116.376869,b:40.112679},{a:116.375476,b:40.110468},{a:116.377391,b:40.108331}];
+
+    var $mask=$('.layer-mask'),
+        $range=$('#layer-range');
+//    var baseUrl='http://mservicetst.cochat.lenovo.com/conference-interaction/meet/';
+//    $(function(){
+        FastClick.attach(document.body);
+        if(window.android){
+            window.android.getLocation();
+        }
+
+        var $txt=$('.sign_wish textarea'),
+            $wishList=$('.wish_list');
+        var $tInput=$('.textareaInput');
+        $txt.on('input propertychange',function(){
+            controlNum.call($txt,$tInput,30);
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'http://mservicetst.cochat.lenovo.com/conference-interaction/meeting/benison/3',
+//            url:'/conference-interaction/meeting/benison/3',
+            data:{token:myToken},
+//            data:{token:'48d1571d69791f1bb10765e527526cfbbc1a8f8ab362d0ce7ed54c8da615ab4016f532606af53f9e85c5c7f1525bdad384c5b1b40d2f3716db18fc4d08a93fc87f443b05bde984c3ab332659361217fb'},
+            dataType:'json',
+            timeout:5000,
+            success:function(data,textStatus){
+                var content='';
+                $.each(data.benisonList,function(index,item){
+                    content+='<span>'+item.content+'</span>';
+                })
+                $wishList.html(content);
+                bindSpan();
+            }
+        });
+
+        wrapSign();
+
+        function wrapSign(){
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if(isiOS){
+                if(curV<'4.2.1'){
+                    $('.btn_sign').on('click',function(){
+                        $mask.fadeIn(200);
+                        $range.html('<div class="range-content"><span style="line-height: 91px;">请升级到4.2.1及其以上乐聊版本！</span></div><div class="range-btn range-btnV">我知道了</div>');
+                        var $rangeBtnV=$('.range-btnV');
+                        hide('click',$rangeBtnV,$([$mask,$range]));
+                        $range.fadeIn(200);
+                    })
+                }else{
+                    setupWebViewJavascriptBridge(function(bridge) {
+                        bridge.callHandler('getLocation', {}, function(response) {
+                            curGeo=response;
+                            sign();
+                        });
+                    })
+                }
+            }
+            if(isAndroid){
+                if(curV<'4.2.0'){
+                    $('.btn_sign').on('click',function(){
+                        $mask.fadeIn(200);
+                        $range.html('<div class="range-content"><span style="line-height: 91px;">请升级到4.2.0及其以上乐聊版本！</span></div><div class="range-btn range-btnV">我知道了</div>');
+                        var $rangeBtnV=$('.range-btnV');
+                        hide('click',$rangeBtnV,$([$mask,$range]));
+                        $range.fadeIn(200);
+                    })
+                }
+            }
+        }
+
+        //jsBridge->android控制window.android.getLocation()回调来执行locationResponse
+        function locationResponse(status,data){
+            curGeo=JSON.parse(data);
+//            $txt.text(curGeo.lontitude);
+            sign();
+        }
+
+        function sign(){
+            if(curGeo){
+//            if(curGeo.lontitude && curGeo.latitude){
+//                alert(curGeo.lontitude);
+                var status=getDistance(curGeo,ary);
+//                alert(status);
+                $('.btn_sign').on('click',function(){
+                    //->根据status判断是否可以签到
+                    if(status){
+                        var signWord=$txt.val();
+                        var ta=$('textarea[name="write_wish"]').val()[0];
+                        if(ta==null||ta==''){
+                            $mask.fadeIn(200);
+                            $range.html('<div class="range-content"><span style="line-height: 91px;">文本框不能为空哦~</span></div><div class="range-btn range-btn1">我知道了</div>');
+                            var $rangeBtn1=$('.range-btn1');
+                            hide('click',$rangeBtn1,$([$mask,$range]));
+                            $range.fadeIn(200);
+                        }else{
+                            var formData={conferenceId:'3',itCode:u_id,content:signWord,token:myToken};
+//                            var formData={conferenceId:'3',itCode:'dijs1',content:signWord,token:'48d1571d69791f1bb10765e527526cfbbc1a8f8ab362d0ce7ed54c8da615ab4016f532606af53f9e85c5c7f1525bdad384c5b1b40d2f3716db18fc4d08a93fc87f443b05bde984c3ab332659361217fb'};
+                            $.ajax({
+                                type:'POST',
+                                url:'http://mservicetst.cochat.lenovo.com/conference-interaction/meeting/sendSign',
+//                                url:'/conference-interaction/meeting/sendSign'+'?v='+Math.random(),
+                                data:formData,
+                                dataType:'json',
+                                timeout:8000,
+                                beforeSend:function(XHR){
+                                    $mask.fadeIn(200);
+                                    $range.html('<div class="range-content"><img class="bg" src="./img/loading.svg" /></div><div class="range-btn range-btn2">正在签到中...</div>');
+                                    $range.fadeIn(200);
+
+                                },
+                                success:function(data,textStatus){
+                                    console.log(data);
+                                    $mask.fadeIn(200);
+                                    $range.html('<div class="range-content"><img src="./img/success.png" /><p>'+data.message+'</p></div><div class="range-btn range-btn3">我知道了</div>');
+                                    var $rangeBtn3=$('.range-btn3');
+                                    hide('click',$rangeBtn3,$([$mask,$range]));
+                                    $('.range-btn3').on('click',function(){
+                                        window.location.href='index.html';
+                                    })
+                                    $range.fadeIn(200);
+                                },
+                                error:function(XHR, textStatus, errorThrown){
+                                    if(textStatus=='timeout'){
+                                        alert('网络请求超时...');
+                                    }else{
+                                        $range.html('<div class="range-content"><img src="./img/failure.png" /><p>签到失败</p></div><div class="range-btn range-btn4">我知道了</div>');
+                                        var $rangeBtn4=$('.range-btn4');
+                                        hide('click',$rangeBtn4,$([$mask,$range]));
+                                    }
+                                }
+                            });
+                        }
+                    }else{
+                        $mask.fadeIn(200);
+                        $range.html('<div class="range-content"><span style="line-height: 91px;">不在签到范围内</span></div><div class="range-btn range-btnSign">我知道了</div>');
+                        var $rangeBtnSign=$('.range-btnSign');
+                        hide('click',$rangeBtnSign,$([$mask,$range]));
+                        $rangeBtnSign.on('click',function(){
+                            window.location.reload();
+                        })
+                        $range.fadeIn(200);
+                    }
+                });
+            }else{
+//                wrapSign();
+                $mask.fadeIn(200);
+                $range.html('<div class="range-content"><span style="line-height: 91px;">获取位置失败,请重新尝试！</span></div><div class="range-btn range-btnP">我知道了</div>');
+                var $rangeBtnP=$('.range-btnP');
+                hide('click',$rangeBtnP,$([$mask,$range]));
+                $range.fadeIn(200);
+            }
+        }
+
+//    });
+
+
+    function getDistance(curGeo,list){
+        var flag=false;
+        var curPoint=new BMap.Point(curGeo.lontitude,curGeo.latitude);
+        var map = new BMap.Map("allmap");
+        $.each(list,function(index,item){
+            var targetPoint=new BMap.Point(item.a,item.b);
+            var distance=parseFloat((map.getDistance(curPoint,targetPoint)).toFixed(2));
+            if(distance<=1500.00){
+                flag=true;
+                return;
+            }
+        })
+        return flag;
+    };
+</script>
+</body>
+</html>

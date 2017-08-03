@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="cochat" />
+    <meta name="description" content="Lenovo,KickOff,Meeting,BT/IT,Cochat" />
+    <meta name="keywords" content="联想誓师大会,联想活动,BT/IT,乐聊" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>发弹幕</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="sign_wish clearfix">
+    <textarea autofocus maxlength="30" name="write_wish" value=""></textarea>
+    <div class="textarea-count">
+        <span class="textareaInput">0</span>/<span class="textareaTotal">30</span>
+    </div>
+    <div class="wish_list clearfix">
+        <!--<span>新的一年希望公司越来越好,同事间互相帮助</span>
+        <span>业绩蒸蒸日上</span>
+        <span>我要上墙,我为上墙而活</span>
+        <span>新财年,新开始,加油</span>
+        <span>Never Stand Still</span>-->
+    </div>
+</div>
+<div class="btn_sign">发弹幕</div>
+
+<!--layer-->
+<div class="layer-mask"></div>
+<div id="layer-range">
+</div>
+<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./js/fastclick.js"></script>
+<script type="text/javascript" src="./js/public.js"></script>
+<script type="text/javascript">
+//    var baseUrl='http://mservicetst.cochat.lenovo.com/conference-interaction/meet/';
+    $(function(){
+        FastClick.attach(document.body);
+
+        var $mask=$('.layer-mask'),
+            $range=$('#layer-range'),
+            $txt=$('.sign_wish textarea'),
+            $wishList=$('.wish_list');
+        var $tInput=$('.textareaInput');
+        $txt.on('input propertychange',function(){
+            controlNum.call($txt,$tInput,30);
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'http://mservicetst.cochat.lenovo.com/conference-interaction/meeting/benison/3',
+//            url:'/conference-interaction/meeting/benison/3'+'?v='+Math.random(),
+            data:{token:myToken},
+//            data:{token:'48d1571d69791f1bb10765e527526cfbbc1a8f8ab362d0ce7ed54c8da615ab4016f532606af53f9e85c5c7f1525bdad384c5b1b40d2f3716db18fc4d08a93fc87f443b05bde984c3ab332659361217fb'},
+            dataType:'json',
+            timeout:5000,
+            /*beforeSend:function(XHR){
+             $mask.fadeIn(200);
+             $range.html('<div class="range-content"><img class="bg" src="./img/loading.svg" /></div><div class="range-btn range-btn2">正在签到中...</div>');
+             $range.fadeIn(200);
+             },*/
+            success:function(data,textStatus){
+                var content='';
+                $.each(data.benisonList,function(index,item){
+                    content+='<span>'+item.content+'</span>';
+                })
+                $wishList.html(content);
+                bindSpan();
+            }
+        });
+
+        $('.btn_sign').on('click',function(){
+            var signWord=$txt.val();
+            var ta=$('textarea[name="write_wish"]').val()[0];
+            if(ta==null||ta==''){
+                $mask.fadeIn(200);
+                $range.html('<div class="range-content"><span style="line-height: 91px;">文本框不能为空哦~</span></div><div class="range-btn range-btn1">我知道了</div>');
+                var $rangeBtn1=$('.range-btn1');
+                hide('click',$rangeBtn1,$([$mask,$range]));
+                $range.fadeIn(200);
+            }else{
+                var formData={conferenceId:'3',itCode:u_id,content:signWord,token:myToken};
+//                var formData={conferenceId:'3',itCode:'dijs1',content:signWord,token:'48d1571d69791f1bb10765e527526cfbbc1a8f8ab362d0ce7ed54c8da615ab4016f532606af53f9e85c5c7f1525bdad384c5b1b40d2f3716db18fc4d08a93fc87f443b05bde984c3ab332659361217fb'};
+                $.ajax({
+                    type:'POST',
+                    url:'http://mservicetst.cochat.lenovo.com/conference-interaction/meeting/sendMessage',
+//                    url:'/conference-interaction/meeting/sendMessage',
+                    data:formData,
+                    dataType:'json',
+                    timeout:5000,
+                    beforeSend:function(XHR){
+                        $mask.fadeIn(200);
+                        $range.html('<div class="range-content"><img class="bg" src="./img/loading.svg" /></div><div class="range-btn range-btn2">正在发送中...</div>');
+                        $range.fadeIn(200);
+
+                    },
+                    success:function(data,textStatus){
+                        console.log(data);
+                        $mask.fadeIn(200);
+                        $range.html('<div class="range-content"><img src="./img/success.png" /><p>弹幕发送成功</p></div><div class="range-btn range-btn3">我知道了</div>');
+                        var $rangeBtn3=$('.range-btn3');
+                        hide('click',$rangeBtn3,$([$mask,$range]));
+                        $('.range-btn3').on('click',function(){
+                            window.location.href='index.html';
+                        })
+                        $range.fadeIn(200);
+                    },
+                    error:function(XHR, textStatus){
+                        if(textStatus>=500){
+                            alert('抱歉,网络繁忙...');
+                        }else if(textStatus=='timeout'){
+                            alert('抱歉,当前服务器过于拥堵!');
+                        }else{
+                            $range.html('<div class="range-content"><img src="./img/failure.png" /><p>弹幕发送失败</p></div><div class="range-btn range-btn4">我知道了</div>');
+                            var $rangeBtn4=$('.range-btn4');
+                            hide('click',$rangeBtn4,$([$mask,$range]));
+                        }
+                    }
+                });
+            }
+        });
+    })
+</script>
+</body>
+</html>
