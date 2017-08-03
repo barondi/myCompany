@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="lenovo" />
+    <meta name="description" content="Lenovo,Yoga,ThinkPad,联想专营店" />
+    <meta name="keywords" content="Lenovo,Yoga,ThinkPad,联想专营店" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>首页</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/swiper.min.css">
+</head>
+<body>
+<header>
+    <div class="i-header">
+        <div class="logo">
+            <!--<img src="" alt="">-->
+            <span>Yoga 5 Pro</span>
+        </div>
+        <ul class="nav">
+            <li class="active">产品配置</li>
+            <li>活动价格</li>
+        </ul>
+        <ul class="operate">
+            <li>
+                <em></em>
+                <p>展示模式</p>
+            </li>
+            <li>
+                <em></em>
+                <p>退出</p>
+            </li>
+        </ul>
+    </div>
+</header>
+<div class="tab-content">
+    <div class="i-content-slide tab-content-active">
+        <ul class="config-list setup-config">
+            <li>
+                <div class="list-item">
+                    <h3>处理器</h3>
+                    <p class="item-sub">
+                        <label>CPU类型：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>核心数量：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>处理器速度：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+                <div class="list-item">
+                    <h3>内存</h3>
+                    <p class="item-sub">
+                        <label>存储容量：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>扩展支持：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+                <div class="list-item">
+                    <h3>硬盘</h3>
+                    <p class="item-sub">
+                        <label>硬盘类型：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>硬盘容量：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="list-item">
+                    <h3>显卡</h3>
+                    <p class="item-sub">
+                        <label>显卡类型：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>显示芯片：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>显存：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+                <div class="list-item">
+                    <h3>屏幕</h3>
+                    <p class="item-sub">
+                        <label>屏幕尺寸：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>分辨率：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+                <div class="list-item">
+                    <h3>电池</h3>
+                    <p class="item-sub">
+                        <label>电池类型：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>电池容量：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>续航时间：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="list-item">
+                    <h3>显卡</h3>
+                    <p class="item-sub">
+                        <label>显卡类型：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>显示芯片：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>显存：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+                <div class="list-item">
+                    <h3>屏幕</h3>
+                    <p class="item-sub">
+                        <label>屏幕尺寸：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>分辨率：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+                <div class="list-item">
+                    <h3>电池</h3>
+                    <p class="item-sub">
+                        <label>电池类型：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>电池容量：</label>
+                        <input type="text" />
+                    </p>
+                    <p class="item-sub">
+                        <label>续航时间：</label>
+                        <input type="text" />
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="i-content-slide">
+        <div class="price-num setup-price-old">
+            <span class="price-title">原价：</span>
+            <div class="price-content">
+                <input type="number" oninput="if(value.length>5)value=value.slice(0,5)" />
+                <span>.</span>
+                <input type="number" oninput="if(value.length>2)value=value.slice(0,2)" value="00" />
+            </div>
+        </div>
+        <div class="price-num setup-price-old setup-price-new">
+            <span class="price-title">原价：</span>
+            <div class="price-content">
+                <input type="number" oninput="if(value.length>5)value=value.slice(0,5)" />
+                <span>.</span>
+                <input type="number" oninput="if(value.length>2)value=value.slice(0,2)" value="00" />
+            </div>
+        </div>
+        <div class="price-desc setup-price-old setup-desc">
+            <span class="price-title">活动介绍：</span>
+            <div class="price-content">
+                <textarea>7月份大促,联想YOGA全线产品8折优惠,不要错过机会</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="layer-mask"></div>
+<div id="layer-range">
+    <div class="l-title">管理员入口</div>
+    <div class="l-info">
+        确定返回展示模式后，修改的信息将被保存。
+    </div>
+    <div class="l-bottom">
+        <a class="cancel">取消</a>
+        <a class="confirm">确定</a>
+    </div>
+    <img src="./img/close.png" />
+</div>
+<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./js/swiper.min.js"></script>
+<script type="text/javascript" src="./js/tab.js"></script>
+<script type="text/javascript">
+    var clHeight = $(window).innerHeight() - $('.i-content-slide:nth-child(2)').height();
+    $('.config-list').css('paddingTop',clHeight/2-30);
+    $('.operate li:nth-child(2)').on('click',function(){
+        var bHeight = $('body').height();
+        var wHeight = window.innerHeight;
+        var bScrollTop = $('body')[0].scrollTop;
+        console.log(wHeight)
+//        $('.layer-mask').height(bHeight).fadeIn(150);
+        $('.layer-mask').css('top',bScrollTop).fadeIn(150);
+        $('#layer-range').css('top',bScrollTop+(wHeight/2)).fadeIn(200);
+        $('body').css('overflow','hidden');
+    });
+    $('#layer-range .l-bottom .cancel').on('click',function(){
+        $('.layer-mask').fadeOut(200);
+        $('#layer-range').fadeOut(200);
+        $('body').css('overflow','initial');
+    })
+    var tabs=document.getElementsByClassName("nav")[0].getElementsByTagName("li");
+    var divs=document.getElementsByClassName("tab-content")[0].getElementsByClassName("i-content-slide");
+    for(var i=0;i<tabs.length;i++){
+        tabs[i].onclick=function(){change(this);}
+    }
+    function change(obj){
+        for(var i=0;i<tabs.length;i++){
+            if(tabs[i]==obj){
+                tabs[i].className="active";
+                divs[i].className="i-content-slide tab-content-active";
+            }else{
+                tabs[i].className="";
+                divs[i].className="i-content-slide";
+            }
+        }
+    }
+</script>
+</body>
+</html>

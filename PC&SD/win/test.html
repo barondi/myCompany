@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body style="height:initial">
+<div id="show" style="background-color:green;width:100%;height:2000px;">
+点击我出现弹层
+</div>
+<div class="layer-mask">
+
+</div>
+<div id="layer-range">
+    <div class="l-title">退h出操作</div>
+    <div class="l-info">
+        <div class="info-account">
+            <span>当前登录账号：</span>
+            <span>dijs1@lenovo.com</span>
+        </div>
+        <div class="info-psd">
+            <input type="password" placeholder="请输入密码" />
+        </div>
+    </div>
+    <div class="l-bottom">
+        <a class="cancel">取消</a>
+        <a class="confirm">确定</a>
+    </div>
+    <img src="./img/close.png" />
+</div>
+<script src="./js/jquery-1.11.3.min.js"></script>
+<script>
+    window.onload = function(){
+        var bHeight = document.body.clientHeight || document.documentElement.clientHeight;
+        var wHeight = window.innerHeight;
+        var oDiv = $('#show');
+        var oMask = $('.layer-mask');
+        var oRange = $('#layer-range');
+        oDiv.on('click',function(){
+            var bScrollTop = $('body')[0].scrollTop;
+            oMask.height(bHeight).fadeIn(150);
+            oRange.css('top',bScrollTop+(wHeight/2)).fadeIn(200);
+        })
+
+        $(window).on('scroll',function(){
+            if(timer){clearTimeout(timer)}
+            var timer = setTimeout(resizeDialog,50)
+        })
+        var resizeDialog = function(){
+            var bScrollTop = $('body')[0].scrollTop;
+            console.log(111)
+            oRange.css('top',bScrollTop+(wHeight/2));
+        }
+    }
+</script>
+</body>
+</html>
