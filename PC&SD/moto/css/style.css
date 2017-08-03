@@ -1,0 +1,18 @@
+.swiper-container{width:100%;height:100%}
+.i-pic{display:block;width:100%;height:100%;}
+.i-lens{height:100%;}
+.i-lens img{display:block;width:100%;height:auto;}
+.i-lens .lens-content,.i-params{padding:0 5%;}
+.i-lens .lens-content h3,.i-params h3{line-height: 44px;border-bottom: 1px solid #cccccc;color:#757575;}
+.i-lens .lens-content p,.i-params .params-list{line-height: 30px;color:#373737;font-size:16px;padding-top: 10px;}
+.i-params .params-list li{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
+.i-params .params-list li label{text-align:right;-webkit-box-flex:1;-moz-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;-webkit-flex-wrap:nowrap;-moz-flex-wrap:nowrap;-ms-flex-wrap:nowrap;-o-flex-wrap:nowrap;flex-wrap:nowrap;padding-right:20px;}
+.i-params .params-list li span{-webkit-box-flex:3;-moz-box-flex:4;-webkit-flex:4;-ms-flex:4;flex:4;-webkit-flex-wrap:nowrap;-moz-flex-wrap:nowrap;-ms-flex-wrap:nowrap;-o-flex-wrap:nowrap;flex-wrap:nowrap;}
+.s-pic{position:relative;}
+.s-pic .pic-propagate{width:100%;height:auto;max-height:544px;}
+.s-pic .pic-triangle{width:200px;height:200px;position:absolute;left:50%;bottom:50px;margin-left:-100px;}
+.s-content{padding:0 2% 80px 5%;}
+.s-content .title{height:44px;}
+.s-content .title span{font-size:20px;color:#757575;float:left;line-height: 44px;}
+.s-content .title em{width:36px;height:24px;background:url("../img/s-triangle.png") no-repeat center center;float:right;background-size:50% 50%;margin-top:10px;}
+.s-content .text{text-indent:8%;line-height:22px;display:none;}
