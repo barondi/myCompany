@@ -61,6 +61,16 @@
 <script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
     $(function(){
+        //showInfoW需要用的东西,middle中的内容动态取
+        var container = $('#container'),
+            topImg = $('.top .title img'),
+            topSpan = $('.top .title span'),
+            topDis = $('.top .dis'),
+            bottomRoad = $('.bottom .road'),
+            bottomTelA = $('.bottom .tel a'),
+            oldPoint = {lng:'',lat:''},
+            newPoint = {lng:'',lat:''};
+
         //展示地图
         var map = new AMap.Map('container', {
             resizeEnable: true,
@@ -68,9 +78,26 @@
             //center: [116.397428, 39.90923]
         });
 
+        var geolocation,myPos;
+        map.plugin('AMap.Geolocation', function() {
+            geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+                buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                //zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+                buttonPosition:'RT'
+            });
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition(function(status,result){
+                status == 'complete' ? myPos = result : alert('定位失败');
+            });
+            AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+            AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+        });
         //打点
         var icon = new AMap.Icon({
-            image: 'http://vdata.amap.com/icons/b18/1/2.png',//24px*24px
+            //image: 'http://vdata.amap.com/icons/b18/1/2.png',//24px*24px
+            image: 'http://10.250.0.117/images/location-red.png',//24px*24px
             //icon可缺省，缺省时为默认的蓝色水滴图标，
             size: new AMap.Size(24, 24)
         });
@@ -79,18 +106,21 @@
                 name:'联想直营店1',
                 lng:'116.39974',
                 lat:'40.153676',
+                tel:'010-835529',
                 type:1
             },
             b:{
                 name:'联想直营店2',
                 lng:'116.19974',
                 lat:'40.053676',
+                tel:'010-835529',
                 type:1
             },
             c:{
                 name:'联想普通店1',
                 lng:'116.30974',
                 lat:'40.103676',
+                tel:'010-835529',
                 type:2
             }
         }
@@ -105,22 +135,51 @@
             showInfW(marker);
         }
 
-        var geolocation;
-        map.plugin('AMap.Geolocation', function() {
-            geolocation = new AMap.Geolocation({
-                enableHighAccuracy: true,//是否使用高精度定位，默认:true
-                timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-                buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-                //zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-                buttonPosition:'RT'
-            });
-            map.addControl(geolocation);
-            geolocation.getCurrentPosition();
-            AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-            AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+        //拖动地图达到一定范围内获取新中心点位置,以新中心点位置重新请求周边店面
+        container.on('touchstart',function(){
+            var center = getCenter();
+            var lnglatX = parseFloat(center.pointLeft),
+                lnglatY = parseFloat(center.pointTop);
+            if (lnglatX && lnglatY) {
+                var ll = map.containTolnglat(new AMap.Pixel(lnglatX, lnglatY));
+                oldPoint.lng = ll.getLng();
+                oldPoint.lat = ll.getLat();
+            }
         });
-
-
+        container.on('touchend',function(){
+            var center = getCenter();
+            var lnglatX = parseFloat(center.pointLeft),
+                lnglatY = parseFloat(center.pointTop);
+            if (lnglatX && lnglatY) {
+                var ll = map.containTolnglat(new AMap.Pixel(lnglatX, lnglatY));
+                newPoint.lng = ll.getLng();
+                newPoint.lat = ll.getLat();
+            }
+            var pointToPoint = getDis(oldPoint.lng,oldPoint.lat,newPoint.lng,newPoint.lat);
+            alert(pointToPoint);
+            if(pointToPoint>10){
+                alert(newPoint.lng)
+                $.ajax({
+                    //url:'http://a.lenovo.com/api/shops/listbygps?lng='+newPoint.lng+'&lat='+newPoint.lat+'&distance=20',
+                    url:'http://a.lenovo.com/api/shops/listbygps',
+                    dataType:'jsonp',
+                    data:{
+                        lng:newPoint.lng,
+                        lat:newPoint.lat,
+                        distance:20
+                    },
+                    success:function(data){
+                        console.log(JSON.parse(data));
+                    }
+                })
+                /*$.getScript('http://a.lenovo.com/api/shops/listbygps?lng='+newPoint.lng+'&lat='+newPoint.lat+'&distance=20'+'&callback=callback',function(data){
+                    console.log(data);
+                })*/
+            }
+        });
+        function callback(data){
+            console.log(data)
+        }
         function onComplete(data) {
             alert('定位成功：'+data.position.getLng()+'&&'+data.position.getLat());
         };
@@ -128,74 +187,42 @@
             alert('定位失败');
         };
         function showInfW(marker){
-            //实例化信息窗体
-            var title = '方恒假日酒店<span style="font-size:11px;color:#F00;">价格:318</span>',content=[];
-            content.push("<img src='https://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里");
-            content.push("电话：010-64733333");
-            content.push("<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>");
-            var infoWindow = new AMap.InfoWindow({
-                isCustom: true,  //使用自定义窗体
-                content: createInfoWindow(title, content.join("<br/>")),
-                offset: new AMap.Pixel(16, -45)
-            });
             //鼠标点击marker弹出自定义的信息窗体
             AMap.event.addListener(marker, 'click', function() {
                 var curPos = marker.getPosition();
                 console.log(curPos)
                 var curObj = null;
-                alert(curPos.lng)
                 for(var key in data){
                     if(curPos.lng == data[key].lng && curPos.lat == data[key].lat){
                         curObj = data[key];
                     }
                 }
-                alert(curObj.name)
-                infoWindow.open(map, marker.getPosition());
+                if(curObj.type == 2){
+
+                }
+                topSpan.text(curObj.name);
+                var dis = getDis(curObj.lng,curObj.lat,myPos.position.lng,myPos.position.lat);
+                topDis.text(dis+'公里');
+                bottomTelA.attr('href','tel:'+curObj.tel);
+                console.log(myPos)
+                //alert(myPos.position.lng);
+                /*infoWindow.open(map, marker.getPosition());*/
             });
         }
-        //构建自定义信息窗体
-        function createInfoWindow(title, content) {
-            var info = document.createElement("div");
-            info.className = "info";
-
-            //可以通过下面的方式修改自定义窗体的宽高
-            //info.style.width = "400px";
-            // 定义顶部标题
-            var top = document.createElement("div");
-            var titleD = document.createElement("div");
-            var closeX = document.createElement("img");
-            top.className = "info-top";
-            titleD.innerHTML = title;
-            closeX.src = "https://webapi.amap.com/images/close2.gif";
-            closeX.onclick = closeInfoWindow;
-
-            top.appendChild(titleD);
-            top.appendChild(closeX);
-            info.appendChild(top);
-
-            // 定义中部内容
-            var middle = document.createElement("div");
-            middle.className = "info-middle";
-            middle.style.backgroundColor = 'white';
-            middle.innerHTML = content;
-            info.appendChild(middle);
-
-            // 定义底部内容
-            var bottom = document.createElement("div");
-            bottom.className = "info-bottom";
-            bottom.style.position = 'relative';
-            bottom.style.top = '0px';
-            bottom.style.margin = '0 auto';
-            var sharp = document.createElement("img");
-            sharp.src = "https://webapi.amap.com/images/sharp.png";
-            bottom.appendChild(sharp);
-            info.appendChild(bottom);
-            return info;
-        };
-        //关闭信息窗体
-        function closeInfoWindow() {
-            map.clearInfoWindow();
+        function getDis(targetLng,targetLat,curLng,curLat){
+            var lnglat = new AMap.LngLat(curLng,curLat);
+            var dis = lnglat.distance([targetLng,targetLat]);
+            return (dis/1000).toFixed(1);
         }
+        function getCenter(){
+            var width = container.width()/2;
+            var height = container.height()/2;
+            return {
+                pointLeft:width,
+                pointTop:height
+            }
+        }
+        window.callback=callback;
     })
 </script>
 </body>
