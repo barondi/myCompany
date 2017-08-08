@@ -62,7 +62,8 @@
 <script type="text/javascript">
     $(function(){
         //showInfoW需要用的东西,middle中的内容动态取
-        var container = $('#container'),
+        var data=null,
+            container = $('#container'),
             topImg = $('.top .title img'),
             topSpan = $('.top .title span'),
             topDis = $('.top .dis'),
@@ -97,11 +98,11 @@
         //打点
         var icon = new AMap.Icon({
             //image: 'http://vdata.amap.com/icons/b18/1/2.png',//24px*24px
-            image: 'http://10.250.0.117/images/location-red.png',//24px*24px
+            image: 'http://a.lenovo.com/images/location-red.png',//24px*24px
             //icon可缺省，缺省时为默认的蓝色水滴图标，
             size: new AMap.Size(24, 24)
         });
-        var data={
+/*        var data={
             a:{
                 name:'联想直营店1',
                 lng:'116.39974',
@@ -133,7 +134,7 @@
                 map: map
             });
             showInfW(marker);
-        }
+        }*/
 
         //拖动地图达到一定范围内获取新中心点位置,以新中心点位置重新请求周边店面
         container.on('touchstart',function(){
@@ -156,9 +157,7 @@
                 newPoint.lat = ll.getLat();
             }
             var pointToPoint = getDis(oldPoint.lng,oldPoint.lat,newPoint.lng,newPoint.lat);
-            alert(pointToPoint);
             if(pointToPoint>10){
-                alert(newPoint.lng)
                 $.ajax({
                     //url:'http://a.lenovo.com/api/shops/listbygps?lng='+newPoint.lng+'&lat='+newPoint.lat+'&distance=20',
                     url:'http://a.lenovo.com/api/shops/listbygps',
@@ -168,8 +167,22 @@
                         lat:newPoint.lat,
                         distance:20
                     },
-                    success:function(data){
-                        console.log(JSON.parse(data));
+                    success:function(result){
+                        result = JSON.parse(result);
+                        console.log(result)
+                        data = result.data;
+                        if(data){
+                            map.clearMap();
+                            for(var i=0;i<data.length;i++){
+                                var pos = data[i]._location.split(',');
+                                var marker = new AMap.Marker({
+                                    icon:icon,
+                                    position: pos,
+                                    map: map
+                                });
+                                showInfW(marker,data[i]);
+                            }
+                        }
                     }
                 })
                 /*$.getScript('http://a.lenovo.com/api/shops/listbygps?lng='+newPoint.lng+'&lat='+newPoint.lat+'&distance=20'+'&callback=callback',function(data){
@@ -186,27 +199,19 @@
         function onError(data) {
             alert('定位失败');
         };
-        function showInfW(marker){
+        function showInfW(marker,obj){
             //鼠标点击marker弹出自定义的信息窗体
             AMap.event.addListener(marker, 'click', function() {
                 var curPos = marker.getPosition();
-                console.log(curPos)
-                var curObj = null;
-                for(var key in data){
-                    if(curPos.lng == data[key].lng && curPos.lat == data[key].lat){
-                        curObj = data[key];
-                    }
+                console.log(marker)
+                var pos = obj._location.split(',');
+                if(curPos.lng == pos[0] && curPos.lat == pos[1]){
+                    topSpan.text(obj._name);
+                    //var dis = getDis(pos[0],pos[1],myPos.position.lng,myPos.position.lat);
+                    topDis.text((obj._distance/1000).toFixed(1)+'公里');
+                    bottomTelA.attr('href','tel:010-8888888');
+                    console.log(myPos)
                 }
-                if(curObj.type == 2){
-
-                }
-                topSpan.text(curObj.name);
-                var dis = getDis(curObj.lng,curObj.lat,myPos.position.lng,myPos.position.lat);
-                topDis.text(dis+'公里');
-                bottomTelA.attr('href','tel:'+curObj.tel);
-                console.log(myPos)
-                //alert(myPos.position.lng);
-                /*infoWindow.open(map, marker.getPosition());*/
             });
         }
         function getDis(targetLng,targetLat,curLng,curLat){
