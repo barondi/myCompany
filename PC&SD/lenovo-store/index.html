@@ -95,46 +95,7 @@
             AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
             AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
         });
-        //打点
-        var icon = new AMap.Icon({
-            //image: 'http://vdata.amap.com/icons/b18/1/2.png',//24px*24px
-            image: 'http://a.lenovo.com/images/location-red.png',//24px*24px
-            //icon可缺省，缺省时为默认的蓝色水滴图标，
-            size: new AMap.Size(24, 24)
-        });
-/*        var data={
-            a:{
-                name:'联想直营店1',
-                lng:'116.39974',
-                lat:'40.153676',
-                tel:'010-835529',
-                type:1
-            },
-            b:{
-                name:'联想直营店2',
-                lng:'116.19974',
-                lat:'40.053676',
-                tel:'010-835529',
-                type:1
-            },
-            c:{
-                name:'联想普通店1',
-                lng:'116.30974',
-                lat:'40.103676',
-                tel:'010-835529',
-                type:2
-            }
-        }
-        for(var key in data){
-            var pos = [data[key].lng,data[key].lat];
-            //map.clearMap();
-            var marker = new AMap.Marker({
-                icon:icon,
-                position: pos,
-                map: map
-            });
-            showInfW(marker);
-        }*/
+
 
         //拖动地图达到一定范围内获取新中心点位置,以新中心点位置重新请求周边店面
         container.on('touchstart',function(){
@@ -171,10 +132,28 @@
                         result = JSON.parse(result);
                         console.log(result)
                         data = result.data;
-                        if(data){
+                        if(data!=null&&data!=''){
                             map.clearMap();
                             for(var i=0;i<data.length;i++){
-                                var pos = data[i]._location.split(',');
+                                var icon;
+                                if(data[i].type == '直营店'){
+                                    //打点
+                                    icon = new AMap.Icon({
+                                        image: 'http://vdata.amap.com/icons/b18/1/2.png',//24px*24px
+                                        //image: 'http://a.lenovo.com/images/location-red.png',//24px*24px
+                                        //icon可缺省，缺省时为默认的蓝色水滴图标，
+                                        size: new AMap.Size(24, 24)
+                                    });
+                                }else{
+                                    icon = new AMap.Icon({
+                                        image: 'http://vdata.amap.com/icons/b18/1/3.png',//24px*24px
+                                        //image: 'http://a.lenovo.com/images/location-red.png',//24px*24px
+                                        //icon可缺省，缺省时为默认的蓝色水滴图标，
+                                        size: new AMap.Size(24, 24)
+                                    });
+                                }
+                                //var pos = data[i]._location.split(',');
+                                var pos = [data[i].x,data[i].y];
                                 var marker = new AMap.Marker({
                                     icon:icon,
                                     position: pos,
@@ -182,6 +161,73 @@
                                 });
                                 showInfW(marker,data[i]);
                             }
+                            $('.amap-marker').on('click',function(){
+                                backToOldSize();
+                                $(this).find('.amap-icon').css({'width':'36px','height':'36px'});
+                            })
+                        }else{
+                            var lnglatXY = [newPoint.lng,newPoint.lat];
+                            AMap.plugin('AMap.Geocoder',function(){
+                                var geocoder = new AMap.Geocoder({
+                                    radius: 1000,
+                                    extensions: "all"
+                                });
+                                geocoder.getAddress(lnglatXY, function(status, result) {
+                                    if (status === 'complete' && result.info === 'OK') {
+                                        var info = result.regeocode.addressComponent;
+                                        var city = info.city||info.province;
+                                        if(city){
+                                            $.ajax({
+                                                url:'http://a.lenovo.com/api/shops/listbycity',
+                                                dataType:'jsonp',
+                                                data:{
+                                                    city:city,
+                                                },
+                                                success:function(result){
+                                                    result = JSON.parse(result);
+                                                    data = result.data;
+                                                    if(data!=null&&data!=''){
+                                                        map.clearMap();
+                                                        for(var i=0;i<data.length;i++){
+                                                            var icon;
+                                                            if(data[i].type == '直营店'){
+                                                                //打点
+                                                                icon = new AMap.Icon({
+                                                                    image: 'http://vdata.amap.com/icons/b18/1/2.png',//24px*24px
+                                                                    //image: 'http://a.lenovo.com/images/location-red.png',//24px*24px
+                                                                    //icon可缺省，缺省时为默认的蓝色水滴图标，
+                                                                    size: new AMap.Size(24, 24)
+                                                                });
+                                                            }else{
+                                                                icon = new AMap.Icon({
+                                                                    image: 'http://vdata.amap.com/icons/b18/1/3.png',//24px*24px
+                                                                    //image: 'http://a.lenovo.com/images/location-red.png',//24px*24px
+                                                                    //icon可缺省，缺省时为默认的蓝色水滴图标，
+                                                                    size: new AMap.Size(24, 24)
+                                                                });
+                                                            }
+                                                            //var pos = data[i]._location.split(',');
+                                                            var pos = [data[i].x,data[i].y];
+                                                            var marker = new AMap.Marker({
+                                                                icon:icon,
+                                                                position: pos,
+                                                                map: map
+                                                            });
+                                                            showInfW(marker,data[i]);
+                                                        }
+                                                        $('.amap-marker').on('click',function(){
+                                                            backToOldSize();
+                                                            $(this).find('.amap-icon').css({'width':'36px','height':'36px'});
+                                                        })
+                                                    }else{
+                                                        alert('抱歉,暂无相关店面');
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                });
+                            })
                         }
                     }
                 })
@@ -192,28 +238,34 @@
         });
         function callback(data){
             console.log(data)
-        }
+        };
         function onComplete(data) {
             alert('定位成功：'+data.position.getLng()+'&&'+data.position.getLat());
         };
         function onError(data) {
             alert('定位失败');
         };
+        function backToOldSize(){
+            $('.amap-marker .amap-icon').css({'width':'24px','height':'24px'});
+        };
         function showInfW(marker,obj){
             //鼠标点击marker弹出自定义的信息窗体
             AMap.event.addListener(marker, 'click', function() {
+
                 var curPos = marker.getPosition();
                 console.log(marker)
-                var pos = obj._location.split(',');
+                //var pos = obj._location.split(',');
+                var pos = [obj.x,obj.y];
                 if(curPos.lng == pos[0] && curPos.lat == pos[1]){
-                    topSpan.text(obj._name);
+                    obj.type == '授权店' ? topImg.attr('src','./img/fuwudian.png') : topImg.attr('src','./img/zhiyingdian.png');
+                    topSpan.text(obj.name);
                     //var dis = getDis(pos[0],pos[1],myPos.position.lng,myPos.position.lat);
-                    topDis.text((obj._distance/1000).toFixed(1)+'公里');
-                    bottomTelA.attr('href','tel:010-8888888');
+                    //topDis.text((obj.distance/1000).toFixed(1)+'公里');
+                    bottomTelA.attr('href','tel:'+obj.tel);
                     console.log(myPos)
                 }
             });
-        }
+        };
         function getDis(targetLng,targetLat,curLng,curLat){
             var lnglat = new AMap.LngLat(curLng,curLat);
             var dis = lnglat.distance([targetLng,targetLat]);
@@ -226,7 +278,7 @@
                 pointLeft:width,
                 pointTop:height
             }
-        }
+        };
         window.callback=callback;
     })
 </script>
