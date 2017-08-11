@@ -14,7 +14,7 @@
         .top .title{float:left;width:84%;}
         .top .title img{width:25px;height:25px;vertical-align:middle;}
         .top .title span{font-size:16px;vertical-align:middle;display:inline-block;width:86%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-        .top .dis{float:right;line-height:25px;color:#665f66;}
+        .top .dis{float:right;line-height:25px;color:#665f66;font-size:12px;}
         .middle{padding-bottom:14px;border-bottom:1px solid #dadada;}
         .middle p{color:#665f66;line-height:20px;}
         .bottom{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;-webkit-box-align:center;-moz-box-align: center;-ms-flex-align: center;-webkit-align-items: center;align-items: center;text-align: center;position:relative;}
@@ -360,10 +360,15 @@
                 if(curPos.lng == pos[0] && curPos.lat == pos[1]){
                     obj.type == '授权店' ? topImg.attr('src','./img/fuwudian.png') : topImg.attr('src','./img/zhiyingdian.png');
                     topSpan.text(obj.name);
-                    var dis = getDis(pos[0],pos[1],myPos.position.lng,myPos.position.lat);
-                    topDis.text(dis);
-                    middleAddr.text(obj.address+'公里');
+                    middleAddr.text(obj.address);
                     bottomTelA.attr('href','tel:'+obj.tel);
+                    console.log(myPos)
+                    if(!myPos){
+                        topDis.text('未知');
+                    }else{
+                        var dis = getDis(pos[0],pos[1],myPos.position.lng,myPos.position.lat);
+                        topDis.text(dis+'公里');
+                    }
                 }
             });
         };
