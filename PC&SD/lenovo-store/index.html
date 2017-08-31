@@ -41,7 +41,7 @@
     </div>
     <div class="middle">
         <p>北京市海淀区清河中街五彩城购物中心西区L108</p>
-        <!--<p>周一至周日10:00-19:00</p>-->
+        <p>周一至周日10:00-19:00</p>
     </div>
     <div class="bottom">
         <div class="road">
@@ -67,7 +67,8 @@
             topImg = $('.top .title img'),
             topSpan = $('.top .title span'),
             topDis = $('.top .dis'),
-            middleAddr = $('.middle p:nth-child(1)');
+            middleAddr = $('.middle p:nth-child(1)'),
+            middleTime = $('.middle p:nth-child(2)');
             bottomRoad = $('.bottom .road'),
             bottomTelA = $('.bottom .tel a'),
             oldPoint = {lng:'',lat:''},
@@ -79,6 +80,7 @@
             zoom:11
             //center: [116.397428, 39.90923]
         });
+        map.setMapStyle('amap://styles/macaron');
 
         var geolocation,myPos;
         map.plugin('AMap.Geolocation', function() {
@@ -350,15 +352,20 @@
             //鼠标点击marker弹出自定义的信息窗体
             AMap.event.addListener(marker, 'click', function() {
                 $('.info').fadeIn(300);
+                console.log($('.amap-marker .amap-icon'));
+                console.log(marker);
                 $('.amap-marker .amap-icon').css({width:'24px',height:'24px'});
                 $(marker.Ia.H.gk).css({width:'36px',height:'36px'});
-                console.log($('.amap-marker .amap-icon'))
+                /*if(marker.Xa.I.Ag){
+                    $(marker.Xa.I.Ag).css({width:'36px',height:'36px'});
+                }*/
                 var curPos = marker.getPosition();
                 console.log(marker)
                 //var pos = obj._location.split(',');
                 var pos = [obj.x,obj.y];
                 if(curPos.lng == pos[0] && curPos.lat == pos[1]){
                     obj.type == '授权店' ? topImg.attr('src','./img/fuwudian.png') : topImg.attr('src','./img/zhiyingdian.png');
+                    middleTime.text(obj.servicetime);
                     topSpan.text(obj.name);
                     middleAddr.text(obj.address);
                     bottomTelA.attr('href','tel:'+obj.tel);
