@@ -167,7 +167,7 @@
                                     icon:icon,
                                     position: pos,
                                     map: map,
-                                    content:'<img src="http://a.lenovo.com/images/location-red.png" width="24px" height="24px" />',
+                                    content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_red.png" width="60px" height="29px" />',
                                     extData:{
                                         id:'red'
                                     }
@@ -183,12 +183,13 @@
                                     icon:icon,
                                     position: pos,
                                     map: map,
-                                    content:'<img src="http://a.lenovo.com/images/location-blue.png" width="24px" height="24px" />',
+                                    content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_blue.png" width="60px" height="29px" />',
                                     extData:{
                                         id:'blue'
                                     }
                                 });
                             }
+                            setCenter(marker,data[i]);
                             showInfW(marker,data[i],icon);
                         }
                     }else{
@@ -236,7 +237,7 @@
                                                                 icon:icon,
                                                                 position: pos,
                                                                 map: map,
-                                                                content:'<img src="http://a.lenovo.com/images/location-red.png" width="24px" height="24px" />',
+                                                                content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_red.png" width="60px" height="29px" />',
                                                                 extData:{
                                                                     id:'red'
                                                                 }
@@ -252,12 +253,13 @@
                                                                 icon:icon,
                                                                 position: pos,
                                                                 map: map,
-                                                                content:'<img src="http://a.lenovo.com/images/location-blue.png" width="24px" height="24px" />',
+                                                                content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_blue.png" width="60px" height="29px" />',
                                                                 extData:{
                                                                     id:'blue'
                                                                 }
                                                             });
                                                         }
+                                                        setCenter(marker,data[i]);
                                                         showInfW(marker,data[i]);
                                                     }
                                                 }else{
@@ -309,7 +311,7 @@
                                     icon:icon,
                                     position: pos,
                                     map: map,
-                                    content:'<img src="http://a.lenovo.com/images/location-red.png" width="24px" height="24px" />',
+                                    content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_red.png" width="60px" height="29px" />',
                                     extData:{
                                         id:'red'
                                     }
@@ -325,12 +327,13 @@
                                     icon:icon,
                                     position: pos,
                                     map: map,
-                                    content:'<img src="http://a.lenovo.com/images/location-blue.png" width="24px" height="24px" />',
+                                    content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_blue.png" width="60px" height="29px" />',
                                     extData:{
                                         id:'blue'
                                     }
                                 });
                             }
+                            setCenter(marker,data[i]);
                             showInfW(marker,data[i]);
                         }
                     }else{
@@ -372,7 +375,7 @@
                                                                 icon:icon,
                                                                 position: pos,
                                                                 map: map,
-                                                                content:'<img src="http://a.lenovo.com/images/location-red.png" width="24px" height="24px" />',
+                                                                content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_red.png" width="60px" height="29px" />',
                                                                 extData:{
                                                                     id:'red'
                                                                 }
@@ -388,12 +391,13 @@
                                                                 icon:icon,
                                                                 position: pos,
                                                                 map: map,
-                                                                content:'<img src="http://a.lenovo.com/images/location-blue.png" width="24px" height="24px" />',
+                                                                content:'<img src="http://10.116.60.202:8081/demo/lenovo-store/img/L_blue.png" width="60px" height="29px" />',
                                                                 extData:{
                                                                     id:'blue'
                                                                 }
                                                             });
                                                         }
+                                                        setCenter(marker,data[i]);
                                                         showInfW(marker,data[i]);
                                                     }
                                                 }else{
@@ -415,19 +419,27 @@
         function onError(data) {
             alert('定位失败');
         };
+        function setCenter(marker,obj){
+            AMap.event.addListener(marker,'click',function(){
+                console.log(obj);
+                //var cp = marker.getPosition();
+                //map.setZoomAndCenter(11, [cp.lng, cp.lat]);
+            })
+        };
         function showInfW(marker,obj){
             //鼠标点击marker弹出自定义的信息窗体
             AMap.event.addListener(marker, 'click', function() {
                 $('.info').fadeIn(300);
                 console.log($('.amap-marker .amap-icon'));
                 console.log(marker);
-                $('.amap-marker .amap-marker-content img').css({width:'24px',height:'24px'});
+                $('.amap-marker .amap-marker-content img').css({width:'60px',height:'29px'});
+                $('.amap-marker .amap-marker-content img[src="https://webapi.amap.com/theme/v1.3/markers/n/loc.png"]').css({width:'23px',height:'23px'});
                 var content = marker.getContentDom();
                 console.log(content);
                 console.log(marker.getExtData());
 //                $(content).css({width:'36px',height:'36px'});
-                $(content).find('img').css({width:'36px',height:'36px'});
-                //$(marker.Ia.H.gk).css({width:'36px',height:'36px'});
+                $(content).find('img').css({width:'90px',height:'44px'});
+                //$(marker.Ia.H.gk).css({width:'90px',height:'44px'});
                 /*if(marker.Xa.I.Ag){
                  $(marker.Xa.I.Ag).css({width:'36px',height:'36px'});
                  }*/
