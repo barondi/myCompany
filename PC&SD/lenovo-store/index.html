@@ -25,11 +25,15 @@
         .bottom .line{height:28px;border-right:1px solid #dadada;position:absolute;left:50%;top:8px;}
         .bottom .tel{position:relative;}
         .bottom .tel input{position:absolute;left:0;top:0;width:100%;height:100%;z-index:99;opacity:0;}
+        .notify{width:210px;background-color:#000000;position:absolute;right:-240px;top:10px;opacity:0.5;border-bottom-left-radius: 20px;border-top-left-radius: 20px;color: #ffffff;font-size: 12px;padding: 5px 8px 5px 16px;line-height: 16px;}
     </style>
 </head>
 <body>
 <div id="container">
 
+</div>
+<div class="notify">
+    联想店铺，十一大促，优惠多多，折扣大大，期待您的光临！
 </div>
 <div class="info">
     <div class="top clearfix">
@@ -61,6 +65,9 @@
 <script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
     $(function(){
+        $('.notify').animate({
+            right:0
+        },1000)
         //showInfoW需要用的东西,middle中的内容动态取
         var data=null,
             container = $('#container'),
@@ -89,7 +96,7 @@
                 timeout: 10000,          //超过10秒后停止定位，默认：无穷大
                 buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
                 //zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-                buttonPosition:'RT'
+                buttonPosition:'RB'
             });
             map.addControl(geolocation);
             geolocation.getCurrentPosition(function(status,result){
@@ -225,7 +232,7 @@
                                                         showInfW(marker,data[i],icon);
                                                     }
                                                 }else{
-                                                    alert('抱歉,暂无相关店面');
+                                                    alert('抱歉,您所在的城市没有店面');
                                                 }
                                             }
                                         })
@@ -292,7 +299,7 @@
                                     var city = info.city||info.province;
                                     if(city){
                                         $.ajax({
-                                            url:'http://a.lenovo.com/api/shops/listbycity',
+                                            url:'https://a.lenovo.com/api/shops/listbycity',
                                             dataType:'jsonp',
                                             data:{
                                                 city:city,
@@ -351,6 +358,7 @@
         function showInfW(marker,obj,icon){
             //鼠标点击marker弹出自定义的信息窗体
             AMap.event.addListener(marker, 'click', function() {
+                $('.amap-geolocation-con').css('bottom','200px');
                 $('.info').fadeIn(300);
                 console.log($('.amap-marker .amap-icon'));
                 console.log(marker);
