@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>后台管理</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/my.css">
+
+</head>
+
+<body class="fixed-navigation">
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation" id="nav">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                    	<span>
+                            <img alt="image" class="img-logo" src="img/show_logo.png" />
+                        </span>
+                        <span class="clear">
+                            <!--<span class="block m-t-xs text-name">
+                                <strong class="font-bold">张三</strong>
+                            </span>-->
+                            <span class="store-name text-muted text-xs block">
+
+                            </span>
+                        </span>
+                    </div>
+                    <div class="logo-element">
+                        <img src="img/profile_small.jpg" />
+                    </div>
+                </li>
+                <li class="active">
+                    <a href="###"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">数据管理</span></a>
+                </li>
+                <li>
+                    <a href="on-products.html"><i class="fa fa-desktop"></i><span class="nav-label">样机管理</span></a>
+                </li>
+                <li>
+                    <a href="pro-thumbnail.html"><i class="fa fa-download"></i><span class="nav-label">资源下载</span></a>
+                </li>
+                <li>
+                    <a href="pro-video.html"><i class="fa fa-comment"></i><span class="nav-label">评论反馈</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+    	<div class="row border-bottom white-bg">
+        	<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        		<div class="navbar-header">
+           			<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <div class="navbar-title-custom">数据管理</div>
+        		</div>
+            	<ul class="nav navbar-top-links navbar-right">
+                	<li class="signout">
+                    	<a href="login.html">
+                        	<i class="fa fa-sign-out"></i> 退出
+                    	</a>
+                	</li>
+            	</ul>
+        	</nav>
+        </div>
+                
+		<div class="data-replace wrapper wrapper-content data-padding animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>机型访问数据</h5>
+                            <!--<div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="form_advanced.html#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="form_advanced.html#">Config option 1</a>
+                                    </li>
+                                    <li><a href="form_advanced.html#">Config option 2</a>
+                                    </li>
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>-->
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group" id="data_1">
+                                    <div class="input-daterange input-group" id="datepicker-1">
+                                        <input readonly type="text" style="background-color:#ffffff;height:34px;" class="input-sm form-control" name="start" />
+                                        <span class="input-group-addon">to</span>
+                                        <input readonly type="text" style="background-color:#ffffff;height:34px;" class="input-sm form-control" name="end" />
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-w-m btn-default" style="position:absolute;left:440px;top:64px;min-width:80px;">搜索</button>
+                                <button type="button" class="btn btn-w-m btn-primary" style="position:absolute;right:38px;top:64px;background-color:#25b6ed;color:#ffffff;">生成Excel</button>
+                            </div>
+                            <div id="mainChart" style="width:100%;height:500px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="footer">
+			<div>
+				<strong>Copyright</strong> &copy; 2016-2017
+			</div>
+		</div>     
+	</div>
+</div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <!--<script src="js/plugins/fullcalendar/moment.min.js"></script>-->
+    <!--<script src="js/plugins/daterangepicker/daterangepicker.js"></script>-->
+
+
+    <script src="https://cdn.bootcss.com/echarts/3.8.4/echarts.common.min.js"></script>
+    <script>
+        $('#data_1 .input-daterange').datepicker({
+            keyboardNavigation: false,
+            forceParse: false,
+            autoclose: true
+        });
+
+        var testData = [
+            {
+                "times": 765,
+                "productPn": "20HRA007CD",
+                "count": 4365,
+                "productName": "ThinkPad X1 Carbon 2017"
+            },
+            {
+                "times": 236,
+                "productPn": "88888888",
+                "count": 3744,
+                "productName": ""
+            },
+            {
+                "times": 576,
+                "productPn": "20HDA003CD",
+                "count": 2414,
+                "productName": "ThinkPad T470"
+            },
+            {
+                "times": 331,
+                "productPn": "20J3A004CD",
+                "count": 2351,
+                "productName": "ThinkPad New S2"
+            },
+            {
+                "times": 219,
+                "productPn": "20FQA01NCD",
+                "count": 2136,
+                "productName": "ThinkPad X1 Yoga"
+            },
+            {
+                "times": 238,
+                "productPn": "20H4A001CD",
+                "count": 1589,
+                "productName": "ThinkPad E475"
+            },
+            {
+                "times": 105,
+                "productPn": "80vq0020cd",
+                "count": 1573,
+                "productName": "ideapad 710S-13IKB"
+            },
+            {
+                "times": 150,
+                "productPn": "20H1001NCD",
+                "count": 1530,
+                "productName": "ThinkPad E470"
+            },
+            {
+                "times": 4,
+                "productPn": "80v4002qcd",
+                "count": 1530,
+                "productName": "YOGA 710-14IKB"
+            },
+            {
+                "times": 258,
+                "productPn": "20H5004DCD",
+                "count": 1515,
+                "productName": "ThinkPad 黑侠E570"
+            },
+            {
+                "times": 108,
+                "productPn": "80wf000dcd",
+                "count": 1483,
+                "productName": "小新 Air 13 Pro"
+            },
+            {
+                "times": 160,
+                "productPn": "80x30005cd",
+                "count": 1480,
+                "productName": "小新潮7000 "
+            },
+            {
+                "times": 117,
+                "productPn": "80un0001cd",
+                "count": 1366,
+                "productName": "小新 Air12"
+            },
+            {
+                "times": 123,
+                "productPn": "80wb0004cd",
+                "count": 1286,
+                "productName": "小新锐7000"
+            },
+            {
+                "times": 94,
+                "productPn": "80xd0000cd",
+                "count": 1193,
+                "productName": "小新 Air Pro"
+            },
+            {
+                "times": 99,
+                "productPn": "20HBA006CD",
+                "count": 1138,
+                "productName": "ThinkPad P51s"
+            },
+            {
+                "times": 347,
+                "productPn": "81bv002pcd",
+                "count": 1127,
+                "productName": "ideapad 720S-13IKB"
+            },
+            {
+                "times": 264,
+                "productPn": "80vf001xcd",
+                "count": 1052,
+                "productName": "YOGA 5 Pro-13IKB"
+            },
+            {
+                "times": 85,
+                "productPn": "80y30008cd",
+                "count": 947,
+                "productName": "小新潮5000"
+            },
+            {
+                "times": 213,
+                "productPn": "80v4002ncd",
+                "count": 900,
+                "productName": "YOGA 710-14IKB"
+            },
+            {
+                "times": 26,
+                "productPn": "20G4A001CD",
+                "count": 873,
+                "productName": "ThinkPad 黑将 S5"
+            },
+            {
+                "times": 296,
+                "productPn": "80x6003ycd",
+                "count": 796,
+                "productName": "YOGA 720-13IKB"
+            },
+            {
+                "times": 245,
+                "productPn": "80u1001ucd",
+                "count": 779,
+                "productName": "MIIX 5"
+            },
+            {
+                "times": 3,
+                "productPn": "20hha01wcd",
+                "count": 756,
+                "productName": "ThinkPad P51"
+            },
+            {
+                "times": 2,
+                "productPn": "f0cu001lcp",
+                "count": 674,
+                "productName": "AIO 520S-23IKU "
+            },
+            {
+                "times": 192,
+                "productPn": "80WF000DCD",
+                "count": 645,
+                "productName": "小新 Air 13 Pro"
+            },
+            {
+                "times": 197,
+                "productPn": "F0CU001MCP",
+                "count": 632,
+                "productName": "AIO 520S-23IKU"
+            },
+            {
+                "times": 62,
+                "productPn": "f0cb00vhcd",
+                "count": 621,
+                "productName": "AIO 510-22ISH"
+            },
+            {
+                "times": 121,
+                "productPn": "20HNA01ECD",
+                "count": 556,
+                "productName": "ThinkPad X270"
+            },
+            {
+                "times": 11,
+                "productPn": "90H80002CP",
+                "count": 540,
+                "productName": "拯救者Y520T"
+            },
+            {
+                "times": 149,
+                "productPn": "80XD0000CD",
+                "count": 509,
+                "productName": "小新 Air Pro"
+            },
+            {
+                "times": 142,
+                "productPn": "80V4002NCD",
+                "count": 471,
+                "productName": "YOGA 710-14IKB"
+            },
+            {
+                "times": 115,
+                "productPn": "80X30005CD",
+                "count": 442,
+                "productName": "小新潮7000 "
+            },
+            {
+                "times": 126,
+                "productPn": "80Y30008CD",
+                "count": 427,
+                "productName": "小新潮5000"
+            },
+            {
+                "times": 0,
+                "productPn": "80WF000ECD",
+                "count": 94,
+                "productName": "小新 Air 13 Pro"
+            },
+            {
+                "times": 19,
+                "productPn": "80WB0004CD",
+                "count": 82,
+                "productName": "小新锐7000"
+            },
+            {
+                "times": 17,
+                "productPn": "80WW000WCD",
+                "count": 57,
+                "productName": "拯救者 R720-15IKB"
+            },
+            {
+                "times": 10,
+                "productPn": "20HHA005CD",
+                "count": 35,
+                "productName": "ThinkPad P51"
+            },
+            {
+                "times": 0,
+                "productPn": "80wf0004cd",
+                "count": 30,
+                "productName": "小新 Air 13 Pro"
+            },
+            {
+                "times": 3,
+                "productPn": "80VQ000TCD",
+                "count": 11,
+                "productName": "ideapad 710S-13IKB"
+            },
+            {
+                "times": 0,
+                "productPn": "80wf000ecd",
+                "count": 8,
+                "productName": "小新 Air 13 Pro"
+            }
+        ];
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('mainChart'));
+
+        // 指定图表的配置项和数据
+        option = {
+            dataZoom:[{
+                id: 'dataZoomX',
+                start: 0,
+                end: 40,
+                show: true,                              //是否显示 组件。如果设置为 false，不会显示，但是数据过滤的功能还存在。
+            }],
+            color:['#25b6ed'],
+            backgroundColor: '#ffffff',
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            /*toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },*/
+            legend: {
+                data:['体验次数','体验时长']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['小新Air','thinkpad T450','MotoZ','小新Air','thinkpad T450','MotoZ','MotoZ','MotoZ','MotoZ','小新Air','thinkpad T450','MotoZ','MotoZ','MotoZ','MotoZ','MotoZ','MotoZ','MotoZ'],
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '体验次数',
+                    /*min: 0,
+                    max: 250,
+                    interval: 50,*/
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '体验时长',
+                    /*min: 0,
+                    max: 25,
+                    interval: 5,*/
+                    axisLabel: {
+                        formatter: '{value} 小时'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name:'体验次数',
+                    type:'bar',
+                    data:[2.6, 26.4, 9.0,2.6, 26.4,2.6, 26.4, 9.0, 26.4, 28.7, 70.7, 9.0, 26.4, 28.7, 70.7,26.4, 28.7, 70.7]
+                },
+                {
+                    name:'体验时长',
+                    type:'line',
+                    yAxisIndex: 1,
+                    data:[2.0, 10.2, 3.3,2.0, 10.2, 3.3, 4.5, 6.3, 10.2,2.0, 10.2, 3.3, 4.5, 6.3, 10.2, 4.5, 6.3, 10.2],
+                    itemStyle:{
+                        normal:{
+                            color:'blue'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        $.ajax({
+            type:'POST',
+            url:'https://api-sandbox.unifiedcloud.lenovo.com/pcsd-newretail-demoreport/retail-data-report/getOneChart',
+            beforeSend: function(request) {
+                request.setRequestHeader("MSP-appKey",appKey);
+                request.setRequestHeader("MSP-AuthKey", getAuthKey("BD55A1AEDE87413D82C8DA4BEE67F38E","BC1E342384034433B9E94FA7E655D704"));
+            },
+            dataType:'json',
+            data:{
+                storeNo:'d0121178',
+                startDt:'01/11/2018',
+                endDt:'01/17/2018'
+            },
+            timeout:10000,
+            success:function(data){
+                console.log(data)
+            }
+        })
+    </script>
+</body>
+</html>
