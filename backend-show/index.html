@@ -102,9 +102,9 @@
                             <div class="row">
                                 <div class="form-group" id="data_1">
                                     <div class="input-daterange input-group" id="datepicker-1">
-                                        <input readonly type="text" style="background-color:#ffffff;height:34px;" class="input-sm form-control" name="start" />
+                                        <input readonly type="text" style="background-color:#ffffff;height:34px;" class="input-start input-sm form-control" name="start" />
                                         <span class="input-group-addon">to</span>
-                                        <input readonly type="text" style="background-color:#ffffff;height:34px;" class="input-sm form-control" name="end" />
+                                        <input readonly type="text" style="background-color:#ffffff;height:34px;" class="input-end input-sm form-control" name="end" />
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-w-m btn-default" style="position:absolute;left:440px;top:64px;min-width:80px;">搜索</button>
@@ -409,7 +409,7 @@
             dataZoom:[{
                 id: 'dataZoomX',
                 start: 0,
-                end: 40,
+                end: 60,
                 show: true,                              //是否显示 组件。如果设置为 false，不会显示，但是数据过滤的功能还存在。
             }],
             color:['#25b6ed'],
@@ -437,7 +437,7 @@
             xAxis: [
                 {
                     type: 'category',
-                    data: ['小新Air','thinkpad T450','MotoZ','小新Air','thinkpad T450','MotoZ','MotoZ','MotoZ','MotoZ','小新Air','thinkpad T450','MotoZ','MotoZ','MotoZ','MotoZ','MotoZ','MotoZ','MotoZ'],
+                    data: [],
                     axisPointer: {
                         type: 'shadow'
                     }
@@ -469,13 +469,13 @@
                 {
                     name:'体验次数',
                     type:'bar',
-                    data:[2.6, 26.4, 9.0,2.6, 26.4,2.6, 26.4, 9.0, 26.4, 28.7, 70.7, 9.0, 26.4, 28.7, 70.7,26.4, 28.7, 70.7]
+                    data:[]
                 },
                 {
                     name:'体验时长',
                     type:'line',
                     yAxisIndex: 1,
-                    data:[2.0, 10.2, 3.3,2.0, 10.2, 3.3, 4.5, 6.3, 10.2,2.0, 10.2, 3.3, 4.5, 6.3, 10.2, 4.5, 6.3, 10.2],
+                    data:[],
                     itemStyle:{
                         normal:{
                             color:'blue'
@@ -485,9 +485,16 @@
             ]
         };
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
 
+
+        var time = new Date().getTime();
+        var endDate = getMyDate(time);
+        var startDate = getMyDate(time-60*60*24*1000*7);
+        console.log(startDate,endDate);
+        var inputStart = $('#datepicker-1 .input-start');
+        var inputEnd = $('#datepicker-1 .input-end');
+        inputStart.val(startDate);
+        inputEnd.val(endDate);
         $.ajax({
             type:'POST',
             url:'https://api-sandbox.unifiedcloud.lenovo.com/pcsd-newretail-demoreport/retail-data-report/getOneChart',
@@ -498,12 +505,27 @@
             dataType:'json',
             data:{
                 storeNo:'d0121178',
-                startDt:'01/11/2018',
-                endDt:'01/17/2018'
+                startDt:startDate,
+                endDt:endDate
             },
             timeout:10000,
             success:function(data){
                 console.log(data)
+                if(data){
+                    option.xAxis[0].data=[];
+                    option.series[0].data=[];
+                    option.series[1].data=[];
+                    var list = data.list;
+                    for(var i=0;i<list.length;i++){
+                        option.xAxis[0].data.push(list[i].productName);
+                        option.series[0].data.push(list[i].count);
+                        option.series[1].data.push(list[i].times);
+                    }
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }else{
+                    alert('当前时间范围内暂无数据！')
+                }
             }
         })
     </script>

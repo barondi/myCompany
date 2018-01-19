@@ -15,3 +15,13 @@ function getAuthKey(clientId, clientSecret){
     auth_key = auth_key.substring(8,24);
     return  auth_key+ "." + now;
 }
+
+//converse time
+function getMyDate(timeStamp){
+    var date = new Date(timeStamp);
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    var arr = [month,day,year];
+    return arr.join('/');
+}
